@@ -1,32 +1,38 @@
 import 'package:flutter/material.dart';
-import 'package:portfolio/features/taskbar/taskbar.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:portfolio/features/desktop/desktop.dart';
 
-class DesktopView extends StatefulWidget {
+class DesktopView extends ConsumerWidget {
   const DesktopView({super.key});
 
   @override
-  State<DesktopView> createState() => _DesktopViewState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final icons = ref.watch(desktopIconsProvider);
+    // final wallpaper = ref.watch(settingsProvider.select((s) => s.wallpaper));
 
-class _DesktopViewState extends State<DesktopView> {
-  @override
-  Widget build(BuildContext context) {
     return Stack(
       children: [
-        Container(color: Colors.blue),
-        Align(alignment: Alignment.bottomCenter, child: TaskBar()),
-        Align(
-          alignment: Alignment.center,
-          child: Draggable(
-            data: Container(),
-            feedback: Container(
-              height: 200,
-              width: 200,
-              color: Colors.red.withOpacity(0.5),
-            ),
-            child: Container(height: 200, width: 200, color: Colors.red),
+        Positioned.fill(
+          child: Image.asset(
+            'assets/images/windows-7.jpg',
+            fit: BoxFit.cover,
           ),
         ),
+
+        Padding(
+          padding: const EdgeInsets.all(16),
+          child: Align(
+            alignment: Alignment.topLeft,
+            child: Wrap(
+              direction: Axis.vertical,
+              spacing: 24,
+              runSpacing: 16,
+              children: icons.map((icon) => DesktopIconWidget(icon: icon)).toList(),
+            ),
+          ),
+        ),
+
+        const DesktopLayerStack(),
       ],
     );
   }
