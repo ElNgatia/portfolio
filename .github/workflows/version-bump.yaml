@@ -76,10 +76,10 @@ jobs:
         run: |
           if git diff --quiet; then
             echo "no changes"
-            echo "::set-output name=changes::no"
+            echo "changes=no" >> $GITHUB_OUTPUT
           else
             echo "Changes detected"
-            echo "::set-output name=changes::yes"
+            echo "changes=yes" >> $GITHUB_OUTPUT
           fi
 
       - name: Commit version bump
