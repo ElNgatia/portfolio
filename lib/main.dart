@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:portfolio/features/desktop/presentation/desktop_view.dart';
+import 'package:portfolio/features/desktop/presentation/views/desktop_view.dart';
 
 void main() {
   runApp(ProviderScope(child: const MyApp()));
