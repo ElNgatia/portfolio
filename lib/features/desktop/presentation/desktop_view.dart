@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:portfolio/features/desktop/presentation/taskbar.dart';
+import 'package:portfolio/features/taskbar/taskbar.dart';
 
 class DesktopView extends StatefulWidget {
   const DesktopView({super.key});

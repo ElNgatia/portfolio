@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:portfolio/features/desktop/presentation/dektop_view.dart';
+import 'package:portfolio/features/desktop/presentation/desktop_view.dart';
 
 void main() {
   runApp(const MyApp());
