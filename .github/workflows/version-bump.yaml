@@ -1,0 +1,97 @@
+name: Version Bump
+
+on:
+  pull_request:
+    types: [opened]
+
+permissions:
+  actions: write
+  pull-requests: write
+  statuses: write
+  contents: write
+
+
+jobs:
+  version-bump:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{secrets.PAT}}
+          ref: ${{ github.event.pull_request.head.ref }}
+
+      - name: Get current from main
+        id: get-current-version
+        run: |
+          git fetch origin main
+          CURRENT_VERSION=$(git cat-file -p origin/main:pubspec.yaml | grep version: | awk '{print $2}')
+          echo "Current version=${CURRENT_VERSION}" >> $GITHUB_ENV
+
+      - name: Get Pull Request Title
+        id: pr-title
+        run: |
+          if [[ $GITHUB_EVENT_NAME == 'pull_request' ]]; then
+            echo "PR_TITLE=$(jq --raw-output .pull_request.title "$GITHUB_EVENT_PATH")" >> $GITHUB_ENV
+          else
+            echo "PR_TITLE=none" >> $GITHUB_ENV
+          fi
+      
+
+      - name: Determine version increment
+        id: version-increment
+        run: |
+          PR_TITLE="${{ env.PR_TITLE }}"
+          VERSION="${{ env.CURRENT_VERSION }}"
+          
+          IFS='.' read -r -a VERSION_PARTS <<< "${VERSION%%+*}"
+          BUILD=${VERSION##*+}
+
+          MAJOR=${VERSION_PARTS[0]}
+          MINOR=${VERSION_PARTS[1]}
+          PATCH=${VERSION_PARTS[2]}
+
+          if [[ "$PR_TITLE" == *"BREAKING CHANGE:"* ]]; then
+            MAJOR=$((MAJOR + 1))
+            MINOR=0
+            PATCH=0
+          elif [[ "$PR_TITLE" == feat* ]]; then
+            MINOR=$((MINOR + 1))
+            PATCH=0
+          elif [[ "$PR_TITLE" == fix* || "$PR_TITLE" == refactor* ]]; then
+            PATCH=$((PATCH + 1))
+          fi
+
+          BUILD=$((BUILD + 1))
+          
+          NEW_VERSION="${MAJOR}.${MINOR}.${PATCH}"
+          echo "NEW_VERSION=${NEW_VERSION}" >> $GITHUB_ENV
+          echo "NEW_BUILD=${BUILD}" >> $GITHUB_ENV
+  
+      - name: Update pubspec.yaml version
+        run: |
+          sed -i "s/^version: .*/version: ${{ env.NEW_VERSION }}+${{ env.NEW_BUILD }}/" pubspec.yaml
+       
+      - name: Check for changes
+        id: check_changes
+        run: |
+          if git diff --quiet; then
+            echo "no changes"
+            echo "::set-output name=changes::no"
+          else
+            echo "Changes detected"
+            echo "::set-output name=changes::yes"
+          fi
+
+      - name: Commit version bump
+        if: steps.check_changes.outputs.changes == 'yes'
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT }}
+        run: |
+          
+          git config user.name 'ElNgatia'
+          git config user.email 'ngatiadyte@gmail.com'
+          git pull
+          git add pubspec.yaml
+          git commit -m "Bump version to ${{ env.NEW_VERSION }}+${{ env.NEW_BUILD }}"
+          git push origin HEAD:${{ github.head_ref }}
+  
