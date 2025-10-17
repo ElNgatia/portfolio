@@ -40,6 +40,18 @@ class WindowManager extends _$WindowManager {
   void focusWindow(String id) => _bringToFront(id);
 
   void _bringToFront(String id) {
-    // Optionally handle z-index ordering
+    final windows = Map<String, WindowEntity>.from(state);
+    final updatedWindows = <String, WindowEntity>{};
+    windows.forEach((key, win) {
+      if (key != id) {
+        updatedWindows[key] = win.copyWith(isFocused: false);
+      }
+    });
+
+    final focusedWin = windows[id];
+    if (focusedWin != null) {
+      updatedWindows[id] = focusedWin.copyWith(isFocused: true);
+    }
+    state = updatedWindows;
   }
 }
