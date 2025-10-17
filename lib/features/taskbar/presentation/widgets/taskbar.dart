@@ -23,8 +23,17 @@ class _TaskBarState extends ConsumerState<TaskBar> {
     final nowAsync = ref.watch(nowProvider).value;
     return Container(
       width: double.infinity,
+      decoration: BoxDecoration(
+        boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 4, offset: Offset(0, -2))],
+
+        gradient: LinearGradient(
+          colors: [Colors.blueGrey.shade50, Colors.blueGrey.shade100],
+        ),
+        border: Border(
+          top: BorderSide(color: Colors.grey.shade300, width: 1),
+        ),
+      ),
       height: 50,
-      color: Colors.white,
       child: Row(
         spacing: 8,
         children: [
@@ -38,7 +47,10 @@ class _TaskBarState extends ConsumerState<TaskBar> {
               onPressed: () {
                 wm.restoreWindow(window.id);
               },
-              icon: Icon(Icons.window),
+              icon: Icon(
+                Icons.window,
+                color: window.isFocused ? Colors.blueAccent : Colors.black87,
+              ),
             ),
 
           // Add minimized windows here
@@ -56,7 +68,6 @@ class _TaskBarState extends ConsumerState<TaskBar> {
               style: TextStyle(
                 fontSize: 16,
                 color: Colors.black,
-                backgroundColor: Colors.white,
               ),
             ),
           ),
