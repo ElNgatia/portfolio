@@ -31,7 +31,7 @@ class WindowManager extends _$WindowManager {
   void restoreWindow(String id) {
     final win = state[id];
     if (win == null) return;
-    state = {...state, id: state[id]!.copyWith(isMinimized: false)};
+    state = {...state, id: state[id]!.copyWith(isMinimized: !state[id]!.isMinimized)};
   }
 
   void moveWindow(String id, Offset delta) {
