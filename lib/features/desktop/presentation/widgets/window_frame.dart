@@ -23,7 +23,11 @@ class WindowFrame extends ConsumerWidget {
       left: state?.position.dx ?? 100,
       top: state?.position.dy ?? 100,
       child: GestureDetector(
-        onTapDown: (_) => wm.focusWindow(windowId),
+        onTapDown: (_) {
+          if (!(state?.isFocused ?? false)) {
+            wm.focusWindow(windowId);
+          }
+        },
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 200),
           width: state?.size.width ?? 600,
