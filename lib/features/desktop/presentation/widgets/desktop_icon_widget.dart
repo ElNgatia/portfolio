@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:portfolio/features/desktop/desktop.dart';
+import 'package:portfolio/features/desktop/domain/entity/window_entity.dart';
+import 'package:portfolio/features/desktop/presentation/provider/window_manager.dart';
 
 class DesktopIconWidget extends ConsumerWidget {
   final DesktopIcon icon;
@@ -8,8 +10,18 @@ class DesktopIconWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final center = MediaQuery.of(context).size.center(Offset.zero);
     return GestureDetector(
-      // onDoubleTap: () => ref.read(windowManagerProvider.notifier).open(icon.appType),
+      onDoubleTap: () => ref
+          .read(windowManagerProvider.notifier)
+          .openWindow(
+            WindowEntity(
+              id: icon.id,
+              title: icon.title,
+              position: center,
+              size: Size(400, 400),
+            ),
+          ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [

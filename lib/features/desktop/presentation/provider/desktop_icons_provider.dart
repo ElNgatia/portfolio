@@ -7,31 +7,31 @@ final desktopIconsProvider = Provider<List<DesktopIcon>>((ref) {
       title: 'About Me',
       icon: 'assets/images/windows-7.jpg',
       appType: AppType.about,
-      id: '',
+      id: '123',
     ),
     DesktopIcon(
       title: 'Projects',
       icon: 'assets/images/windows-7.jpg',
       appType: AppType.projects,
-      id: '',
+      id: '456',
     ),
     DesktopIcon(
       title: 'Experience',
       icon: 'assets/images/windows-7.jpg',
       appType: AppType.experience,
-      id: '',
+      id: '789',
     ),
     DesktopIcon(
       title: 'Contact',
       icon: 'assets/images/windows-7.jpg',
       appType: AppType.contact,
-      id: '',
+      id: '012',
     ),
     DesktopIcon(
       title: 'Resume',
       icon: 'assets/images/windows-7.jpg',
       appType: AppType.resume,
-      id: '',
+      id: '345',
     ),
   ];
 });
