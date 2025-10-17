@@ -26,6 +26,7 @@ class _TaskBarState extends ConsumerState<TaskBar> {
       height: 50,
       color: Colors.white,
       child: Row(
+        spacing: 8,
         children: [
           IconButton(onPressed: () {}, icon: Icon(Icons.menu)),
           // SearchBar(),
@@ -42,8 +43,11 @@ class _TaskBarState extends ConsumerState<TaskBar> {
 
           // Add minimized windows here
           Spacer(),
-          IconButton(onPressed: () {}, icon: Icon(Icons.search)),
-          IconButton(onPressed: () {}, icon: Icon(Icons.settings)),
+
+          Icon(Icons.volume_down, color: Colors.black),
+
+          Icon(Icons.network_cell, color: Colors.green),
+
           //Time and date
           Padding(
             padding: const EdgeInsets.only(right: 8.0),
@@ -52,6 +56,7 @@ class _TaskBarState extends ConsumerState<TaskBar> {
               style: TextStyle(
                 fontSize: 16,
                 color: Colors.black,
+                backgroundColor: Colors.white,
               ),
             ),
           ),
