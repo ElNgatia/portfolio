@@ -33,13 +33,12 @@ class WindowFrame extends ConsumerWidget {
             color: Colors.grey.shade100,
             border: Border.all(color: Colors.blueGrey),
             boxShadow: [
-              if (state?.isFocused ?? false)
-                const BoxShadow(blurRadius: 12, color: Colors.black26),
+              if (state?.isFocused ?? false) const BoxShadow(blurRadius: 12, color: Colors.black26),
             ],
           ),
           child: Column(
             children: [
-              // _TitleBar(windowId: windowId, title: title),
+              _TitleBar(windowId: windowId, title: title),
               Expanded(child: child),
             ],
           ),
@@ -49,3 +48,31 @@ class WindowFrame extends ConsumerWidget {
   }
 }
 
+class _TitleBar extends ConsumerWidget {
+  const _TitleBar({
+    required this.windowId,
+    required this.title,
+  });
+  final String windowId;
+  final String title;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Row(
+      children: [
+        Text(title, style: Theme.of(context).textTheme.titleMedium),
+        const Spacer(),
+        IconButton(
+          key: ValueKey('minimize_$windowId'),
+          icon: const Icon(Icons.minimize),
+          onPressed: () => ref.read(windowManagerProvider.notifier).minimizeWindow(windowId),
+        ),
+        IconButton(
+          key: ValueKey('close_$windowId'),
+          icon: const Icon(Icons.close),
+          onPressed: () => ref.read(windowManagerProvider.notifier).closeWindow(windowId),
+        ),
+      ],
+    );
+  }
+}
