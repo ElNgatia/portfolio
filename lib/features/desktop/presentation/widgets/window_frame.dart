@@ -23,7 +23,6 @@ class WindowFrame extends ConsumerWidget {
       left: state?.position.dx ?? 100,
       top: state?.position.dy ?? 100,
       child: GestureDetector(
-        onPanUpdate: (d) => wm.moveWindow(windowId, d.delta),
         onTapDown: (_) => wm.focusWindow(windowId),
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 200),
@@ -38,7 +37,14 @@ class WindowFrame extends ConsumerWidget {
           ),
           child: Column(
             children: [
-              _TitleBar(windowId: windowId, title: title),
+              GestureDetector(
+                key: ValueKey('titlebar_$windowId'),
+                onPanEnd: (_) => wm.focusWindow(windowId),
+                onPanUpdate: (d) {
+                  wm.moveWindow(windowId, d.delta);
+                },
+                child: _TitleBar(windowId: windowId, title: title),
+              ),
               Expanded(child: child),
             ],
           ),
@@ -58,21 +64,25 @@ class _TitleBar extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Row(
-      children: [
-        Text(title, style: Theme.of(context).textTheme.titleMedium),
-        const Spacer(),
-        IconButton(
-          key: ValueKey('minimize_$windowId'),
-          icon: const Icon(Icons.minimize),
-          onPressed: () => ref.read(windowManagerProvider.notifier).minimizeWindow(windowId),
-        ),
-        IconButton(
-          key: ValueKey('close_$windowId'),
-          icon: const Icon(Icons.close),
-          onPressed: () => ref.read(windowManagerProvider.notifier).closeWindow(windowId),
-        ),
-      ],
+    return Container(
+      width: double.infinity,
+      color: Colors.blueGrey,
+      child: Row(
+        children: [
+          Text(title, style: Theme.of(context).textTheme.titleMedium),
+          const Spacer(),
+          IconButton(
+            key: ValueKey('minimize_$windowId'),
+            icon: const Icon(Icons.minimize),
+            onPressed: () => ref.read(windowManagerProvider.notifier).minimizeWindow(windowId),
+          ),
+          IconButton(
+            key: ValueKey('close_$windowId'),
+            icon: const Icon(Icons.close),
+            onPressed: () => ref.read(windowManagerProvider.notifier).closeWindow(windowId),
+          ),
+        ],
+      ),
     );
   }
 }

@@ -27,7 +27,9 @@ class DesktopView extends ConsumerWidget {
               direction: Axis.vertical,
               spacing: 24,
               runSpacing: 16,
-              children: icons.map((icon) => DesktopIconWidget(icon: icon)).toList(),
+              children: icons
+                  .map((icon) => DesktopIconWidget(icon: icon))
+                  .toList(),
             ),
           ),
         ),

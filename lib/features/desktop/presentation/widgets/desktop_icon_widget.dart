@@ -10,7 +10,10 @@ class DesktopIconWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final center = MediaQuery.of(context).size.center(Offset.zero);
+    final size = Size(400, 400);
+    final center =
+        MediaQuery.of(context).size.center(Offset.zero) -
+        Offset(size.width / 2, size.height / 2);
     return GestureDetector(
       onDoubleTap: () => ref
           .read(windowManagerProvider.notifier)
@@ -19,7 +22,7 @@ class DesktopIconWidget extends ConsumerWidget {
               id: icon.id,
               title: icon.title,
               position: center,
-              size: Size(400, 400),
+              size: size,
             ),
           ),
       child: Column(

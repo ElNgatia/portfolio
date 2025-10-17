@@ -11,7 +11,10 @@ class WindowManager extends _$WindowManager {
   Map<String, WindowEntity> build() => {};
 
   void openWindow(WindowEntity window) {
-    state = {...state, window.id: window.copyWith(isOpen: true, isFocused: true)};
+    state = {
+      ...state,
+      window.id: window.copyWith(isOpen: true, isFocused: true),
+    };
     _bringToFront(window.id);
   }
 
@@ -20,10 +23,14 @@ class WindowManager extends _$WindowManager {
   }
 
   void minimizeWindow(String id) {
+    final win = state[id];
+    if (win == null) return;
     state = {...state, id: state[id]!.copyWith(isMinimized: true)};
   }
 
   void restoreWindow(String id) {
+    final win = state[id];
+    if (win == null) return;
     state = {...state, id: state[id]!.copyWith(isMinimized: false)};
   }
 
@@ -32,7 +39,9 @@ class WindowManager extends _$WindowManager {
     if (win != null) {
       state = {
         ...state,
-        id: win.copyWith(position: win.position + delta),
+        id: win.copyWith(
+          position: win.position + delta,
+        ),
       };
     }
   }
