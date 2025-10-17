@@ -21,16 +21,10 @@ class DesktopLayerStack extends ConsumerWidget {
       children: [
         // Windows
         for (final window in openWindows)
-          Positioned(
-            left: window.position.dx,
-            top: window.position.dy,
-
-            // child: Container(),
-            child: WindowFrame(
-              windowId: window.id,
-              title: window.title,
-              child: Column(),
-            ),
+          WindowFrame(
+            windowId: window.id,
+            title: window.title,
+            child: Column(),
           ),
 
         // Start Menu overlay
