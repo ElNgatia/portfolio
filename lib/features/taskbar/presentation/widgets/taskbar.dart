@@ -1,7 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
+import 'package:popover/popover.dart';
 import 'package:portfolio/features/desktop/presentation/provider/window_manager.dart';
 import 'package:portfolio/features/taskbar/presentation/provider/time_provider.dart';
+import 'package:portfolio/features/taskbar/presentation/widgets/menu.dart';
 
 class TaskBar extends ConsumerStatefulWidget {
   const TaskBar({super.key});
@@ -20,40 +22,79 @@ class _TaskBarState extends ConsumerState<TaskBar> {
         .map((entry) => entry.value)
         .toList();
     final wm = ref.watch(windowManagerProvider.notifier);
-    final nowAsync = ref.watch(nowProvider).value;
+    final nowAsync = ref.watch(nowProvider).value ?? DateTime.now();
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
-        boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 4, offset: Offset(0, -2))],
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black12,
+            blurRadius: 4,
+            offset: Offset(0, -2),
+          ),
+        ],
+        color: Colors.transparent,
 
-        gradient: LinearGradient(
-          colors: [Colors.blueGrey.shade50, Colors.blueGrey.shade100],
-        ),
         border: Border(
-          top: BorderSide(color: Colors.grey.shade300, width: 1),
+          top: BorderSide(color: Colors.grey.shade300, width: .1),
         ),
       ),
       height: 50,
       child: Row(
         spacing: 8,
         children: [
-          IconButton(onPressed: () {}, icon: Icon(Icons.menu)),
-          // SearchBar(),
-          AboutMeIcon(
-            onTap: () {},
+          IconButton(
+            onPressed: () {
+              showPopover(
+                context: context,
+                bodyBuilder: (context) {
+                  return StartMenu();
+                },
+                direction: PopoverDirection.top,
+                width: 200,
+                height: 300,
+              );
+            },
+            icon: Icon(
+              Icons.menu,
+              color: Colors.white,
+            ),
           ),
+
           for (final window in openWindows)
-            IconButton(
-              onPressed: () {
+            InkWell(
+              key: ValueKey('taskbar_icon_${window.id}'),
+              onTap: () {
                 wm.restoreWindow(window.id);
               },
-              icon: Icon(
-                Icons.window,
-                color: window.isFocused ? Colors.blueAccent : Colors.black87,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      key: ValueKey('taskbar_icon_${window.id}'),
+
+                      Icons.window,
+                      size: 16,
+                      color: (window.isFocused && !window.isMinimized)
+                          ? Colors.white
+                          : Colors.white70,
+                    ),
+                    Text(
+                      window.title,
+                      style: TextStyle(
+                        fontSize: 10,
+                        color: (window.isFocused && !window.isMinimized)
+                            ? Colors.white
+                            : Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
 
-          // Add minimized windows here
           Spacer(),
 
           Icon(Icons.volume_down, color: Colors.black),
@@ -64,7 +105,7 @@ class _TaskBarState extends ConsumerState<TaskBar> {
           Padding(
             padding: const EdgeInsets.only(right: 8.0),
             child: Text(
-              "${nowAsync != null ? '${nowAsync.hour.toString().padLeft(2, '0')}:${nowAsync.minute.toString().padLeft(2, '0')}' : '--:--'}\n${nowAsync != null ? '${nowAsync.day.toString().padLeft(2, '0')}/${nowAsync.month.toString().padLeft(2, '0')}/${nowAsync.year}' : '--/--/----'}",
+              "${'${nowAsync.hour.toString().padLeft(2, '0')}:${nowAsync.minute.toString().padLeft(2, '0')}'}\n${'${nowAsync.day.toString().padLeft(2, '0')}/${nowAsync.month.toString().padLeft(2, '0')}/${nowAsync.year}'}",
               style: TextStyle(
                 fontSize: 16,
                 color: Colors.black,
@@ -74,18 +115,5 @@ class _TaskBarState extends ConsumerState<TaskBar> {
         ],
       ),
     );
-  }
-}
-
-class AboutMeIcon extends StatelessWidget {
-  const AboutMeIcon({
-    super.key,
-    required this.onTap,
-  });
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return IconButton(onPressed: onTap, icon: Icon(Icons.person));
   }
 }
