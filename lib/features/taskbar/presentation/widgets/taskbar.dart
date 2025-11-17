@@ -50,6 +50,7 @@ class _TaskBarState extends ConsumerState<TaskBar> {
                 bodyBuilder: (context) {
                   return StartMenu();
                 },
+                transition: PopoverTransition.other,
                 direction: PopoverDirection.top,
                 width: 200,
                 height: 300,
