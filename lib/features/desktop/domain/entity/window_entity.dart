@@ -1,4 +1,4 @@
-import 'dart:ui';
+import 'package:flutter/material.dart';
 
 class WindowEntity {
   final String id;
@@ -8,6 +8,7 @@ class WindowEntity {
   final bool isOpen;
   final bool isMinimized;
   final bool isFocused;
+  final Icon icon;
 
   const WindowEntity({
     required this.id,
@@ -17,6 +18,7 @@ class WindowEntity {
     this.isOpen = true,
     this.isMinimized = false,
     this.isFocused = false,
+    required this.icon,
   });
 
   WindowEntity copyWith({
@@ -33,5 +35,6 @@ class WindowEntity {
     isOpen: isOpen ?? this.isOpen,
     isMinimized: isMinimized ?? this.isMinimized,
     isFocused: isFocused ?? this.isFocused,
+    icon: icon,
   );
 }

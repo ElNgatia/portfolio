@@ -52,6 +52,7 @@ class _TaskBarState extends ConsumerState<TaskBar> {
                 },
                 transition: PopoverTransition.other,
                 direction: PopoverDirection.top,
+                backgroundColor: Colors.white.withValues(alpha: 0.6),
               );
             },
             icon: Icon(
@@ -72,9 +73,8 @@ class _TaskBarState extends ConsumerState<TaskBar> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(
+                      window.icon.icon,
                       key: ValueKey('taskbar_icon_${window.id}'),
-
-                      Icons.window,
                       size: 16,
                       color: (window.isFocused && !window.isMinimized)
                           ? Colors.white

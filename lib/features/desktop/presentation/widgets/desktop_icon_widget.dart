@@ -21,6 +21,7 @@ class DesktopIconWidget extends ConsumerWidget {
           .openWindow(
             WindowEntity(
               id: icon.id,
+              icon: icon.icon,
               title: icon.title,
               position: center,
               size: size,
@@ -29,7 +30,7 @@ class DesktopIconWidget extends ConsumerWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Image.asset(icon.icon, width: 48, height: 48),
+          Icon(icon.icon.icon, size: 48, color: Colors.white),
           const SizedBox(height: 4),
           Text(icon.title, style: Theme.of(context).textTheme.bodySmall),
         ],
