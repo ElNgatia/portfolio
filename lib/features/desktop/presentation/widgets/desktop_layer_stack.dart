@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:portfolio/features/desktop/presentation/provider/window_manager.dart';
 import 'package:portfolio/features/desktop/presentation/widgets/window_frame.dart';
-import 'package:portfolio/features/taskbar/taskbar.dart';
+import 'package:portfolio/features/taskbar/presentation/widgets/taskbar.dart';
 
 class DesktopLayerStack extends ConsumerWidget {
   const DesktopLayerStack({super.key});

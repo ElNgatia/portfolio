@@ -36,7 +36,8 @@ class WindowFrame extends ConsumerWidget {
             color: Colors.grey.shade100,
             border: Border.all(color: Colors.blueGrey),
             boxShadow: [
-              if (state?.isFocused ?? false) const BoxShadow(blurRadius: 12, color: Colors.black26),
+              if (state?.isFocused ?? false)
+                const BoxShadow(blurRadius: 12, color: Colors.black26),
             ],
           ),
           child: Column(
@@ -78,12 +79,15 @@ class _TitleBar extends ConsumerWidget {
           IconButton(
             key: ValueKey('minimize_$windowId'),
             icon: const Icon(Icons.minimize),
-            onPressed: () => ref.read(windowManagerProvider.notifier).minimizeWindow(windowId),
+            onPressed: () => ref
+                .read(windowManagerProvider.notifier)
+                .minimizeWindow(windowId),
           ),
           IconButton(
             key: ValueKey('close_$windowId'),
             icon: const Icon(Icons.close),
-            onPressed: () => ref.read(windowManagerProvider.notifier).closeWindow(windowId),
+            onPressed: () =>
+                ref.read(windowManagerProvider.notifier).closeWindow(windowId),
           ),
         ],
       ),

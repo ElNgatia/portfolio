@@ -13,13 +13,15 @@ class DesktopIconWidget extends ConsumerWidget {
     // TODO: make the size dynamic on user interaction
     final size = Size(600, 400);
     final center =
-        MediaQuery.of(context).size.center(Offset.zero) - Offset(size.width / 2, size.height / 2);
+        MediaQuery.of(context).size.center(Offset.zero) -
+        Offset(size.width / 2, size.height / 2);
     return GestureDetector(
       onDoubleTap: () => ref
           .read(windowManagerProvider.notifier)
           .openWindow(
             WindowEntity(
               id: icon.id,
+              icon: icon.icon,
               title: icon.title,
               position: center,
               size: size,
@@ -28,7 +30,7 @@ class DesktopIconWidget extends ConsumerWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Image.asset(icon.icon, width: 48, height: 48),
+          Icon(icon.icon.icon, size: 48, color: Colors.white),
           const SizedBox(height: 4),
           Text(icon.title, style: Theme.of(context).textTheme.bodySmall),
         ],

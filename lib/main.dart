@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: DesktopView(),
+      home: Scaffold(body: DesktopView()),
     );
   }
 }
