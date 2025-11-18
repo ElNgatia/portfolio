@@ -24,8 +24,9 @@ jobs:
         id: get-current-version
         run: |
           git fetch origin main
-          CURRENT_VERSION=$(git cat-file -p origin/main:pubspec.yaml | grep version: | awk '{print $2}')
-          echo "Current version=${CURRENT_VERSION}" >> $GITHUB_ENV
+          CURRENT_VERSION=$(git show origin/main:pubspec.yaml | grep -E '^version:' | awk '{print $2}')
+          echo "CURRENT_VERSION=${CURRENT_VERSION}" >> $GITHUB_ENV
+          echo "Current version: ${CURRENT_VERSION}"
 
       - name: Get Pull Request Title
         id: pr-title
@@ -36,19 +37,31 @@ jobs:
             echo "PR_TITLE=none" >> $GITHUB_ENV
           fi
       
-
       - name: Determine version increment
         id: version-increment
         run: |
           PR_TITLE="${{ env.PR_TITLE }}"
           VERSION="${{ env.CURRENT_VERSION }}"
           
-          IFS='.' read -r -a VERSION_PARTS <<< "${VERSION%%+*}"
-          BUILD=${VERSION##*+}
+          echo "Processing version: ${VERSION}"
+          echo "PR Title: ${PR_TITLE}"
+          
+          # Extract version and build number
+          if [[ $VERSION == *"+"* ]]; then
+            VERSION_PART=${VERSION%%+*}
+            BUILD=${VERSION##*+}
+          else
+            VERSION_PART=$VERSION
+            BUILD=0
+          fi
+          
+          IFS='.' read -r -a VERSION_PARTS <<< "$VERSION_PART"
+          
+          MAJOR=${VERSION_PARTS[0]:-1}
+          MINOR=${VERSION_PARTS[1]:-0}
+          PATCH=${VERSION_PARTS[2]:-0}
 
-          MAJOR=${VERSION_PARTS[0]}
-          MINOR=${VERSION_PARTS[1]}
-          PATCH=${VERSION_PARTS[2]}
+          echo "Current: Major=$MAJOR, Minor=$MINOR, Patch=$PATCH, Build=$BUILD"
 
           if [[ "$PR_TITLE" == *"BREAKING CHANGE:"* ]]; then
             MAJOR=$((MAJOR + 1))
@@ -66,6 +79,7 @@ jobs:
           NEW_VERSION="${MAJOR}.${MINOR}.${PATCH}"
           echo "NEW_VERSION=${NEW_VERSION}" >> $GITHUB_ENV
           echo "NEW_BUILD=${BUILD}" >> $GITHUB_ENV
+          echo "New version will be: ${NEW_VERSION}+${BUILD}"
   
       - name: Update pubspec.yaml version
         run: |
@@ -94,4 +108,3 @@ jobs:
           git add pubspec.yaml
           git commit -m "Bump version to ${{ env.NEW_VERSION }}+${{ env.NEW_BUILD }}"
           git push origin HEAD:${{ github.head_ref }}
-  
