@@ -52,8 +52,6 @@ class _TaskBarState extends ConsumerState<TaskBar> {
                 },
                 transition: PopoverTransition.other,
                 direction: PopoverDirection.top,
-                width: 200,
-                height: 300,
               );
             },
             icon: Icon(
@@ -98,7 +96,12 @@ class _TaskBarState extends ConsumerState<TaskBar> {
 
           Spacer(),
 
-          Icon(Icons.volume_down, color: Colors.black),
+          Icon(
+            Icons.volume_down,
+            color: ThemeData.estimateBrightnessForColor(Colors.black) == Brightness.dark
+                ? Colors.white
+                : Colors.black,
+          ),
 
           Icon(Icons.network_cell, color: Colors.green),
 
@@ -109,7 +112,9 @@ class _TaskBarState extends ConsumerState<TaskBar> {
               "${'${nowAsync.hour.toString().padLeft(2, '0')}:${nowAsync.minute.toString().padLeft(2, '0')}'}\n${'${nowAsync.day.toString().padLeft(2, '0')}/${nowAsync.month.toString().padLeft(2, '0')}/${nowAsync.year}'}",
               style: TextStyle(
                 fontSize: 16,
-                color: Colors.black,
+                color: ThemeData.estimateBrightnessForColor(Colors.black) == Brightness.dark
+                    ? Colors.white
+                    : Colors.black,
               ),
             ),
           ),

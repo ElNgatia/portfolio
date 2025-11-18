@@ -6,36 +6,66 @@ class StartMenu extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Column(
-      // padding: const EdgeInsets.all(16),
-      children: [
-        Row(
-          children: [
-            Expanded(
-              child: Column(
-                children: [
-                  IconButton(
-                    icon: const Icon(Icons.folder),
-                    onPressed: () {},
-                  ),
-                  const Text('Files'),
-                ],
+    return SizedBox(
+      width: 500,
+      height: 600,
+      child: Column(
+        children: [
+          Row(
+            crossAxisAlignment: .start,
+            children: [
+              Expanded(
+                child: Column(
+                  children: [
+                    StartMenuListTile(
+                      title: 'Projects',
+                      icon: Icon(Icons.construction),
+                      onTap: () {},
+                    ),
+                    StartMenuListTile(
+                      title: 'Browser',
+                      icon: Icon(Icons.language),
+                      onTap: () {},
+                    ),
+                  ],
+                ),
               ),
-            ),
-            Expanded(
-              child: Column(
-                children: [
-                  IconButton(
-                    icon: const Icon(Icons.folder),
-                    onPressed: () {},
-                  ),
-                  const Text('Files'),
-                ],
+              Expanded(
+                child: Column(
+                  children: [
+                    StartMenuListTile(
+                      title: 'Settings',
+                      icon: const Icon(Icons.settings),
+                      onTap: () {},
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
-        ),
-      ],
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class StartMenuListTile extends StatelessWidget {
+  const StartMenuListTile({
+    super.key,
+    required this.title,
+    required this.icon,
+    required this.onTap,
+  });
+  final String title;
+  final Icon icon;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      leading: icon,
+      title: Text(title),
+      onTap: onTap,
     );
   }
 }
