@@ -1,11 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:portfolio/features/desktop/domain/entity/window_entity.dart';
 import 'package:portfolio/features/desktop/presentation/provider/window_manager.dart';
+import 'package:portfolio/features/desktop/presentation/views/about_me_window.dart';
 import 'package:portfolio/features/desktop/presentation/widgets/window_frame.dart';
 import 'package:portfolio/features/taskbar/presentation/widgets/taskbar.dart';
 
 class DesktopLayerStack extends ConsumerWidget {
   const DesktopLayerStack({super.key});
+  Widget _buildWindowContentById(WindowEntity window) {
+    // Map window.id values to the corresponding content widgets.
+    // '123' is the About Me desktop icon id from desktop_icons_provider.
+    switch (window.id) {
+      case '123':
+        return const AboutMeWindow();
+      default:
+        return Center(child: Text(window.title));
+    }
+  }
+
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -24,7 +37,7 @@ class DesktopLayerStack extends ConsumerWidget {
           WindowFrame(
             windowId: window.id,
             title: window.title,
-            child: Column(),
+            child: _buildWindowContentById(window),
           ),
 
         // Start Menu overlay
