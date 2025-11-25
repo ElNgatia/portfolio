@@ -5,12 +5,14 @@ import 'package:portfolio/features/desktop/presentation/provider/window_manager.
 class WindowFrame extends ConsumerWidget {
   final String windowId;
   final String title;
+  final Icon windowIcon;
   final Widget child;
 
   const WindowFrame({
     super.key,
     required this.windowId,
     required this.title,
+    required this.windowIcon,
     required this.child,
   });
 
@@ -48,7 +50,11 @@ class WindowFrame extends ConsumerWidget {
                 onPanUpdate: (d) {
                   wm.moveWindow(windowId, d.delta);
                 },
-                child: _TitleBar(windowId: windowId, title: title),
+                child: _TitleBar(
+                  windowId: windowId,
+                  title: title,
+                  icon: windowIcon,
+                ),
               ),
               Expanded(child: child),
             ],
@@ -63,9 +69,11 @@ class _TitleBar extends ConsumerWidget {
   const _TitleBar({
     required this.windowId,
     required this.title,
+    required this.icon,
   });
   final String windowId;
   final String title;
+  final Icon icon;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -74,6 +82,8 @@ class _TitleBar extends ConsumerWidget {
       color: Colors.blueGrey,
       child: Row(
         children: [
+          icon,
+          const SizedBox(width: 8),
           Text(title, style: Theme.of(context).textTheme.titleMedium),
           const Spacer(),
           IconButton(

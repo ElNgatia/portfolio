@@ -24,7 +24,7 @@ final desktopIconsProvider = Provider<List<DesktopIcon>>((ref) {
     ),
     DesktopIcon(
       title: 'Contact',
-      icon:Icon(Icons.contact_mail),
+      icon: Icon(Icons.contact_mail),
       appType: AppType.contact,
       id: '012',
     ),

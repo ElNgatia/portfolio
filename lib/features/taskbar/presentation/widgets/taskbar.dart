@@ -98,7 +98,9 @@ class _TaskBarState extends ConsumerState<TaskBar> {
 
           Icon(
             Icons.volume_down,
-            color: ThemeData.estimateBrightnessForColor(Colors.black) == Brightness.dark
+            color:
+                ThemeData.estimateBrightnessForColor(Colors.black) ==
+                    Brightness.dark
                 ? Colors.white
                 : Colors.black,
           ),
@@ -112,7 +114,9 @@ class _TaskBarState extends ConsumerState<TaskBar> {
               "${'${nowAsync.hour.toString().padLeft(2, '0')}:${nowAsync.minute.toString().padLeft(2, '0')}'}\n${'${nowAsync.day.toString().padLeft(2, '0')}/${nowAsync.month.toString().padLeft(2, '0')}/${nowAsync.year}'}",
               style: TextStyle(
                 fontSize: 16,
-                color: ThemeData.estimateBrightnessForColor(Colors.black) == Brightness.dark
+                color:
+                    ThemeData.estimateBrightnessForColor(Colors.black) ==
+                        Brightness.dark
                     ? Colors.white
                     : Colors.black,
               ),
