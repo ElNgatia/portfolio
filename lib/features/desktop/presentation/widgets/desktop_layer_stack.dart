@@ -19,7 +19,6 @@ class DesktopLayerStack extends ConsumerWidget {
     }
   }
 
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final openWindows = ref

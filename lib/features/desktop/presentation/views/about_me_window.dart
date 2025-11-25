@@ -34,12 +34,18 @@ class AboutMeWindow extends StatelessWidget {
                     children: [
                       Text(
                         'Elvis Ngatia',
-                        style: Theme.of(
-                          context,
-                        ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700),
+                        style:
+                            Theme.of(
+                              context,
+                            ).textTheme.titleLarge?.copyWith(
+                              fontWeight: FontWeight.w700,
+                            ),
                       ),
                       const SizedBox(height: 4),
-                      Text('Flutter Mobile Engineer', style: Theme.of(context).textTheme.bodySmall),
+                      Text(
+                        'Flutter Mobile Engineer',
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
                     ],
                   ),
                 ),
@@ -71,7 +77,9 @@ class AboutMeWindow extends StatelessWidget {
             const SizedBox(height: 8),
             Text(
               "If you're looking for a developer who cares about clean structure, good UI, performance, and long-term scalability—and can sprinkle a bit of personality into the process—I’d love to connect.",
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
+              style: Theme.of(
+                context,
+              ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
             ),
           ],
         ),
