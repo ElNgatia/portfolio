@@ -37,6 +37,7 @@ class DesktopLayerStack extends ConsumerWidget {
           WindowFrame(
             windowId: window.id,
             title: window.title,
+            windowIcon: window.icon,
             child: _buildWindowContentById(window),
           ),
 
