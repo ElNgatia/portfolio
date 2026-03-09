@@ -5,6 +5,9 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'window_manager.g.dart';
 
+const _minWindowWidth = 300.0;
+const _minWindowHeight = 200.0;
+
 @riverpod
 class WindowManager extends _$WindowManager {
   @override
@@ -50,6 +53,38 @@ class WindowManager extends _$WindowManager {
         ),
       };
     }
+  }
+
+  void resizeWindow(
+    String id, {
+    double widthDelta = 0,
+    double heightDelta = 0,
+    bool fromLeft = false,
+    bool fromTop = false,
+  }) {
+    final win = state[id];
+    if (win == null) return;
+
+    final newWidth = (win.size.width + widthDelta)
+        .clamp(_minWindowWidth, double.infinity)
+        .toDouble();
+    final newHeight = (win.size.height + heightDelta)
+        .clamp(_minWindowHeight, double.infinity)
+        .toDouble();
+
+    double posX = win.position.dx;
+    double posY = win.position.dy;
+
+    if (fromLeft) posX += win.size.width - newWidth;
+    if (fromTop) posY += win.size.height - newHeight;
+
+    state = {
+      ...state,
+      id: win.copyWith(
+        position: Offset(posX, posY),
+        size: Size(newWidth, newHeight),
+      ),
+    };
   }
 
   void focusWindow(String id) => _bringToFront(id);
