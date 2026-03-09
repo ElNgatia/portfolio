@@ -1,9 +1,14 @@
+import 'dart:math' as math;
 import 'dart:ui';
 
 import 'package:portfolio/features/desktop/domain/entity/window_entity.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'window_manager.g.dart';
+
+const _minWindowWidth = 300.0;
+const _minWindowHeight = 200.0;
+const _kTaskbarHeight = 50.0;
 
 @riverpod
 class WindowManager extends _$WindowManager {
@@ -40,13 +45,116 @@ class WindowManager extends _$WindowManager {
     };
   }
 
-  void moveWindow(String id, Offset delta) {
+  void moveWindow(String id, Offset delta, {Size? viewportSize}) {
     final win = state[id];
-    if (win != null) {
+    if (win == null || win.isMaximized) return;
+
+    double newX = win.position.dx + delta.dx;
+    double newY = win.position.dy + delta.dy;
+
+    if (viewportSize != null) {
+      const minVisible = 40.0;
+      newX = newX.clamp(
+        -win.size.width + minVisible,
+        viewportSize.width - minVisible,
+      );
+      newY = newY.clamp(
+        0.0,
+        viewportSize.height - _kTaskbarHeight - minVisible,
+      );
+    }
+
+    state = {
+      ...state,
+      id: win.copyWith(position: Offset(newX, newY)),
+    };
+  }
+
+  void resizeWindow(
+    String id, {
+    double widthDelta = 0,
+    double heightDelta = 0,
+    bool fromLeft = false,
+    bool fromTop = false,
+    Size? viewportSize,
+  }) {
+    final win = state[id];
+    if (win == null || win.isMaximized) return;
+
+    double newWidth =
+        (win.size.width + widthDelta).clamp(_minWindowWidth, double.infinity).toDouble();
+    double newHeight =
+        (win.size.height + heightDelta).clamp(_minWindowHeight, double.infinity).toDouble();
+
+    double posX = win.position.dx;
+    double posY = win.position.dy;
+
+    if (fromLeft) posX += win.size.width - newWidth;
+    if (fromTop) posY += win.size.height - newHeight;
+
+    if (viewportSize != null) {
+      final maxRight = viewportSize.width;
+      final maxBottom = viewportSize.height - _kTaskbarHeight;
+
+      if (fromLeft) {
+        posX = posX.clamp(
+          0.0,
+          win.position.dx + win.size.width - _minWindowWidth,
+        );
+        newWidth = win.position.dx + win.size.width - posX;
+      } else {
+        newWidth = newWidth.clamp(
+          _minWindowWidth,
+          math.max(_minWindowWidth, maxRight - posX),
+        );
+      }
+
+      if (fromTop) {
+        posY = posY.clamp(
+          0.0,
+          win.position.dy + win.size.height - _minWindowHeight,
+        );
+        newHeight = win.position.dy + win.size.height - posY;
+      } else {
+        newHeight = newHeight.clamp(
+          _minWindowHeight,
+          math.max(_minWindowHeight, maxBottom - posY),
+        );
+      }
+    }
+
+    state = {
+      ...state,
+      id: win.copyWith(
+        position: Offset(posX, posY),
+        size: Size(newWidth, newHeight),
+      ),
+    };
+  }
+
+  void maximizeWindow(String id, Size viewportSize) {
+    final win = state[id];
+    if (win == null) return;
+
+    if (win.isMaximized) {
       state = {
         ...state,
         id: win.copyWith(
-          position: win.position + delta,
+          isMaximized: false,
+          position: win.preMaximizePosition ?? win.position,
+          size: win.preMaximizeSize ?? win.size,
+          clearPreMaximize: true,
+        ),
+      };
+    } else {
+      state = {
+        ...state,
+        id: win.copyWith(
+          isMaximized: true,
+          preMaximizePosition: win.position,
+          preMaximizeSize: win.size,
+          position: Offset.zero,
+          size: Size(viewportSize.width, viewportSize.height - _kTaskbarHeight),
         ),
       };
     }
