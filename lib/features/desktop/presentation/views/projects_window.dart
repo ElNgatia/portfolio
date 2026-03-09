@@ -114,6 +114,12 @@ class _ProjectCard extends StatelessWidget {
                 spacing: 8,
                 runSpacing: 4,
                 children: [
+                  if (project.websiteUrl != null)
+                    _LinkButton(
+                      label: 'Website',
+                      icon: Icons.language_outlined,
+                      url: project.websiteUrl!,
+                    ),
                   if (project.pubDevUrl != null)
                     _LinkButton(
                       label: 'pub.dev',
@@ -150,6 +156,7 @@ class _ProjectCard extends StatelessWidget {
   }
 
   bool _hasLinks(Project project) =>
+      project.websiteUrl != null ||
       project.pubDevUrl != null ||
       project.playStoreUrl != null ||
       project.chromeStoreUrl != null ||

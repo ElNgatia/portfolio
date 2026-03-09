@@ -20,6 +20,13 @@ const List<Project> publishedProjects = [
     tags: ['Flutter', 'Dart', 'Android'],
   ),
   Project(
+    name: 'timeago_plus',
+    description:
+        'A Dart library that converts a DateTime into a human-friendly string (e.g. "15 minutes ago", "an hour ago"). A maintained fork of the original timeago package, kept dependency-free with full locale support.',
+    pubDevUrl: 'https://pub.dev/packages/timeago_plus',
+    tags: ['Dart', 'Package'],
+  ),
+  Project(
     name: 'Select With Search',
     description:
         'A Flutter package providing a customizable dropdown select widget with built-in search functionality. Supports single and multiple selection modes with efficient filtering.',
@@ -43,11 +50,12 @@ const List<Project> publishedProjects = [
   Project(
     name: 'Brown and Bliss',
     description:
-        'A bespoke web experience crafted for Brown and Bliss. Built with care and attention to detail.',
-    tags: ['Web'],
+        'A bespoke web experience crafted for Brown and Bliss, with Supabase powering the backend and database.',
+    websiteUrl: 'https://www.brownandblisss.co.ke/',
+    tags: ['Web', 'Supabase'],
   ),
   Project(
-    name: 'Chrome Extension',
+    name: 'Learning Tracker',
     description:
         'A Chrome browser extension published under developer name "El Ngatia". Currently under review on the Chrome Web Store.',
     tags: ['Chrome Extension', 'JavaScript'],
