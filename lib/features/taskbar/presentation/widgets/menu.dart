@@ -1,5 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
+import 'package:portfolio/features/desktop/domain/entity/window_entity.dart';
+import 'package:portfolio/features/desktop/presentation/provider/window_manager.dart';
 
 class StartMenu extends ConsumerWidget {
   const StartMenu({super.key});
@@ -25,7 +27,26 @@ class StartMenu extends ConsumerWidget {
                     StartMenuListTile(
                       title: 'Browser',
                       icon: Icon(Icons.language),
-                      onTap: () {},
+                      onTap: () {
+                        const size = Size(900, 600);
+                        final screenSize = MediaQuery.of(context).size;
+                        final position = Offset(
+                          (screenSize.width - size.width) / 2,
+                          (screenSize.height - size.height) / 2,
+                        );
+                        Navigator.of(context).pop();
+                        ref
+                            .read(windowManagerProvider.notifier)
+                            .openWindow(
+                              WindowEntity(
+                                id: '901',
+                                icon: const Icon(Icons.language),
+                                title: 'Internet Explorer',
+                                position: position,
+                                size: size,
+                              ),
+                            );
+                      },
                     ),
                   ],
                 ),

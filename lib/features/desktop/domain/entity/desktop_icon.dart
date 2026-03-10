@@ -20,4 +20,5 @@ enum AppType {
   contact,
   resume,
   settings,
+  browser,
 }
