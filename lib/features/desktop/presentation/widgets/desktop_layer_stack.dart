@@ -3,8 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:portfolio/features/desktop/domain/entity/window_entity.dart';
 import 'package:portfolio/features/desktop/presentation/provider/window_manager.dart';
 import 'package:portfolio/features/desktop/presentation/views/about_me_window.dart';
+import 'package:portfolio/features/desktop/presentation/views/contact_window.dart';
 import 'package:portfolio/features/desktop/presentation/views/experience_window.dart';
 import 'package:portfolio/features/desktop/presentation/views/projects_window.dart';
+import 'package:portfolio/features/desktop/presentation/views/resume_window.dart';
 import 'package:portfolio/features/desktop/presentation/widgets/window_frame.dart';
 import 'package:portfolio/features/settings/settings.dart';
 import 'package:portfolio/features/taskbar/presentation/widgets/taskbar.dart';
@@ -15,6 +17,8 @@ class DesktopLayerStack extends ConsumerWidget {
     // Map window.id values to the corresponding content widgets.
     // '123' is the About Me desktop icon id from desktop_icons_provider.
     switch (window.id) {
+      case '012':
+        return const ContactWindow();
       case '123':
         return const AboutMeWindow();
       case '456':
@@ -23,6 +27,8 @@ class DesktopLayerStack extends ConsumerWidget {
         return const ExperienceWindow();
       case '678':
         return const SettingsWindow();
+      case '345':
+        return const ResumeWindow();
       default:
         return Center(child: Text(window.title));
     }
