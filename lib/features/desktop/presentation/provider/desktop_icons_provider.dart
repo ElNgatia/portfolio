@@ -34,5 +34,11 @@ final desktopIconsProvider = Provider<List<DesktopIcon>>((ref) {
       appType: AppType.resume,
       id: '345',
     ),
+    DesktopIcon(
+      title: 'Settings',
+      icon: Icon(Icons.settings),
+      appType: AppType.settings,
+      id: '678',
+    ),
   ];
 });

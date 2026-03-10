@@ -26,17 +26,23 @@ class _TaskBarState extends ConsumerState<TaskBar> {
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
-        boxShadow: [
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            const Color(0xFF1A3A5C).withValues(alpha: 0.92),
+            const Color(0xFF0A1E38).withValues(alpha: 0.96),
+          ],
+        ),
+        boxShadow: const [
           BoxShadow(
-            color: Colors.black12,
-            blurRadius: 4,
+            color: Colors.black38,
+            blurRadius: 6,
             offset: Offset(0, -2),
           ),
         ],
-        color: Colors.transparent,
-
-        border: Border(
-          top: BorderSide(color: Colors.grey.shade300, width: .1),
+        border: const Border(
+          top: BorderSide(color: Color(0xFF4A80B4), width: 1),
         ),
       ),
       height: 50,
