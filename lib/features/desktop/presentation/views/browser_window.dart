@@ -96,8 +96,6 @@ class _BrowserWindowState extends State<BrowserWindow> {
   void initState() {
     super.initState();
     _controller = WebViewController()
-      ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..setBackgroundColor(Colors.white)
       ..setNavigationDelegate(
         NavigationDelegate(
           onProgress: (progress) {
@@ -222,7 +220,7 @@ class _BrowserWindowState extends State<BrowserWindow> {
             icon: _isLoading ? Icons.close : Icons.refresh,
             tooltip: _isLoading ? 'Stop' : 'Refresh',
             onPressed: _isLoading
-                ? () => _controller.runJavaScript('window.stop()')
+                ? () => _controller.reload()
                 : () => _controller.reload(),
           ),
           const SizedBox(width: 4),
