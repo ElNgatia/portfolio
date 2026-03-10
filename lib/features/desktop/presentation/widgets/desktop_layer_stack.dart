@@ -5,6 +5,7 @@ import 'package:portfolio/features/desktop/presentation/provider/window_manager.
 import 'package:portfolio/features/desktop/presentation/views/about_me_window.dart';
 import 'package:portfolio/features/desktop/presentation/views/experience_window.dart';
 import 'package:portfolio/features/desktop/presentation/views/projects_window.dart';
+import 'package:portfolio/features/desktop/presentation/views/resume_window.dart';
 import 'package:portfolio/features/desktop/presentation/widgets/window_frame.dart';
 import 'package:portfolio/features/settings/settings.dart';
 import 'package:portfolio/features/taskbar/presentation/widgets/taskbar.dart';
@@ -23,6 +24,8 @@ class DesktopLayerStack extends ConsumerWidget {
         return const ExperienceWindow();
       case '678':
         return const SettingsWindow();
+      case '345':
+        return const ResumeWindow();
       default:
         return Center(child: Text(window.title));
     }
