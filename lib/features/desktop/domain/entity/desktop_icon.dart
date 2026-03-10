@@ -19,4 +19,5 @@ enum AppType {
   experience,
   contact,
   resume,
+  settings,
 }

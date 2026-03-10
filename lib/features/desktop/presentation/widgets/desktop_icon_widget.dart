@@ -32,7 +32,20 @@ class DesktopIconWidget extends ConsumerWidget {
         children: [
           Icon(icon.icon.icon, size: 48, color: Colors.white),
           const SizedBox(height: 4),
-          Text(icon.title, style: Theme.of(context).textTheme.bodySmall),
+          Text(
+            icon.title,
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 12,
+              shadows: [
+                Shadow(
+                  color: Colors.black87,
+                  blurRadius: 4,
+                  offset: Offset(1, 1),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );
