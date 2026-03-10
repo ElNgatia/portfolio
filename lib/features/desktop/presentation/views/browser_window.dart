@@ -86,70 +86,10 @@ class _BrowserWindowState extends State<BrowserWindow> {
     text: 'about:home',
   );
 
-  bool _isLoading = false;
-  int _loadingProgress = 0;
-  bool _canGoBack = false;
-  bool _canGoForward = false;
-  String _statusText = 'Done';
-
   @override
   void initState() {
     super.initState();
-    _controller = WebViewController()
-      ..setNavigationDelegate(
-        NavigationDelegate(
-          onProgress: (progress) {
-            if (!mounted) return;
-            setState(() {
-              _loadingProgress = progress;
-              _isLoading = progress < 100;
-              _statusText =
-                  _isLoading ? 'Loading ($progress%)...' : 'Done';
-            });
-            _updateNavState();
-          },
-          onPageStarted: (url) {
-            if (!mounted) return;
-            setState(() {
-              _isLoading = true;
-              _statusText = 'Connecting...';
-            });
-          },
-          onPageFinished: (url) {
-            if (!mounted) return;
-            setState(() {
-              _isLoading = false;
-              _statusText = 'Done';
-            });
-            _updateNavState();
-          },
-          onUrlChange: (change) {
-            if (!mounted) return;
-            final url = change.url ?? '';
-            setState(() {
-              _addressController.text = url.isEmpty ? 'about:home' : url;
-            });
-          },
-          onWebResourceError: (error) {
-            if (!mounted) return;
-            setState(() {
-              _isLoading = false;
-              _statusText = 'Error: ${error.description}';
-            });
-          },
-        ),
-      )
-      ..loadHtmlString(_kHomePage);
-  }
-
-  Future<void> _updateNavState() async {
-    final canGoBack = await _controller.canGoBack();
-    final canGoForward = await _controller.canGoForward();
-    if (!mounted) return;
-    setState(() {
-      _canGoBack = canGoBack;
-      _canGoForward = canGoForward;
-    });
+    _controller = WebViewController()..loadHtmlString(_kHomePage);
   }
 
   void _navigate(String input) {
@@ -181,13 +121,6 @@ class _BrowserWindowState extends State<BrowserWindow> {
     return Column(
       children: [
         _buildToolbar(),
-        if (_isLoading)
-          LinearProgressIndicator(
-            value: _loadingProgress / 100,
-            backgroundColor: _kIEToolbarBg,
-            valueColor: const AlwaysStoppedAnimation<Color>(_kIEBlue),
-            minHeight: 3,
-          ),
         Expanded(child: WebViewWidget(controller: _controller)),
         _buildStatusBar(),
       ],
@@ -207,21 +140,19 @@ class _BrowserWindowState extends State<BrowserWindow> {
           _NavButton(
             icon: Icons.arrow_back,
             tooltip: 'Back',
-            onPressed: _canGoBack ? () => _controller.goBack() : null,
+            onPressed: () => _controller.goBack(),
           ),
           const SizedBox(width: 2),
           _NavButton(
             icon: Icons.arrow_forward,
             tooltip: 'Forward',
-            onPressed: _canGoForward ? () => _controller.goForward() : null,
+            onPressed: () => _controller.goForward(),
           ),
           const SizedBox(width: 4),
           _NavButton(
-            icon: _isLoading ? Icons.close : Icons.refresh,
-            tooltip: _isLoading ? 'Stop' : 'Refresh',
-            onPressed: _isLoading
-                ? () => _controller.reload()
-                : () => _controller.reload(),
+            icon: Icons.refresh,
+            tooltip: 'Refresh',
+            onPressed: () => _controller.reload(),
           ),
           const SizedBox(width: 4),
           _NavButton(
@@ -251,27 +182,15 @@ class _BrowserWindowState extends State<BrowserWindow> {
       ),
       padding: const EdgeInsets.symmetric(horizontal: 8),
       alignment: Alignment.center,
-      child: Row(
-        children: [
-          Expanded(
-            child: TextField(
-              controller: _addressController,
-              style: const TextStyle(fontSize: 12),
-              decoration: const InputDecoration(
-                border: InputBorder.none,
-                contentPadding: EdgeInsets.zero,
-                isDense: true,
-              ),
-              onSubmitted: _navigate,
-            ),
-          ),
-          if (_isLoading)
-            const SizedBox(
-              width: 14,
-              height: 14,
-              child: CircularProgressIndicator(strokeWidth: 1.5),
-            ),
-        ],
+      child: TextField(
+        controller: _addressController,
+        style: const TextStyle(fontSize: 12),
+        decoration: const InputDecoration(
+          border: InputBorder.none,
+          contentPadding: EdgeInsets.zero,
+          isDense: true,
+        ),
+        onSubmitted: _navigate,
       ),
     );
   }
@@ -284,16 +203,16 @@ class _BrowserWindowState extends State<BrowserWindow> {
         border: Border(top: BorderSide(color: _kIEToolbarBorder)),
       ),
       padding: const EdgeInsets.symmetric(horizontal: 8),
-      child: Row(
+      child: const Row(
         children: [
           Expanded(
             child: Text(
-              _statusText,
-              style: const TextStyle(fontSize: 11, color: Color(0xFF444444)),
+              'Done',
+              style: TextStyle(fontSize: 11, color: Color(0xFF444444)),
               overflow: TextOverflow.ellipsis,
             ),
           ),
-          const Row(
+          Row(
             children: [
               Icon(Icons.language, size: 12, color: _kIEBlue),
               SizedBox(width: 4),
