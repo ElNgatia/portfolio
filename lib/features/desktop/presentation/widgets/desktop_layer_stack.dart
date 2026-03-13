@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:portfolio/features/desktop/domain/entity/window_entity.dart';
 import 'package:portfolio/features/desktop/presentation/provider/window_manager.dart';
 import 'package:portfolio/features/desktop/presentation/views/about_me_window.dart';
+import 'package:portfolio/features/desktop/presentation/views/browser_window.dart';
 import 'package:portfolio/features/desktop/presentation/views/contact_window.dart';
 import 'package:portfolio/features/desktop/presentation/views/experience_window.dart';
 import 'package:portfolio/features/desktop/presentation/views/projects_window.dart';
@@ -29,6 +30,8 @@ class DesktopLayerStack extends ConsumerWidget {
         return const SettingsWindow();
       case '345':
         return const ResumeWindow();
+      case '901':
+        return const BrowserWindow();
       default:
         return Center(child: Text(window.title));
     }

@@ -41,6 +41,12 @@ final desktopIconsProvider = Provider<List<DesktopIcon>>(
         appType: AppType.settings,
         id: '678',
       ),
+      DesktopIcon(
+        title: 'Browser',
+        icon: Icon(Icons.language),
+        appType: AppType.browser,
+        id: '901',
+      ),
     ];
   },
 );
