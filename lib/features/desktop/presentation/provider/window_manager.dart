@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 import 'dart:ui';
 
+import 'package:portfolio/core/constants.dart';
 import 'package:portfolio/features/desktop/domain/entity/window_entity.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -8,7 +9,6 @@ part 'window_manager.g.dart';
 
 const _minWindowWidth = 300.0;
 const _minWindowHeight = 200.0;
-const _kTaskbarHeight = 50.0;
 
 @riverpod
 class WindowManager extends _$WindowManager {
@@ -60,7 +60,7 @@ class WindowManager extends _$WindowManager {
       );
       newY = newY.clamp(
         0.0,
-        viewportSize.height - _kTaskbarHeight - minVisible,
+        viewportSize.height - kTaskbarHeight - minVisible,
       );
     }
 
@@ -94,7 +94,7 @@ class WindowManager extends _$WindowManager {
 
     if (viewportSize != null) {
       final maxRight = viewportSize.width;
-      final maxBottom = viewportSize.height - _kTaskbarHeight;
+      final maxBottom = viewportSize.height - kTaskbarHeight;
 
       if (fromLeft) {
         posX = posX.clamp(
@@ -154,7 +154,7 @@ class WindowManager extends _$WindowManager {
           preMaximizePosition: win.position,
           preMaximizeSize: win.size,
           position: Offset.zero,
-          size: Size(viewportSize.width, viewportSize.height - _kTaskbarHeight),
+          size: Size(viewportSize.width, viewportSize.height - kTaskbarHeight),
         ),
       };
     }
