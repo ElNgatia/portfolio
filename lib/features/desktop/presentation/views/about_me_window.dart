@@ -97,7 +97,7 @@ class AboutMeWindow extends StatelessWidget {
                   ),
                   _paragraph(
                     context,
-                    "I'm the kind of developer who gets genuinely excited by a tricky bug, an unclear API flow, or a complex UI challenge—because it means I get to sharpen my problem-solving skills and make something better than it was yesterday. Over time, I've worked on everything from sales automation tools to advanced multi-step forms, multilingual apps, custom performance dashboards, and even hardware integrations like Sunmi printers.",
+                    "I'm the kind of developer who gets genuinely excited by a tricky bug, an unclear API flow, or a complex UI challenge—because it means I get to sharpen my problem-solving skills and make something better than it was yesterday. Over time, I've worked on everything from business automation tools to advanced multi-step forms, multilingual apps, custom performance dashboards, and a wide range of device and hardware integrations.",
                   ),
                   _paragraph(
                     context,

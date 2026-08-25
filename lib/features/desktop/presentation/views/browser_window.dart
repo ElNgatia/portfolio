@@ -56,7 +56,6 @@ const _kHomePage = '''<!DOCTYPE html>
     <div class="links-grid">
       <a class="link-card" href="https://pub.dev/publishers/ngatia.dev/packages" target="_blank">📦 pub.dev packages</a>
       <a class="link-card" href="https://github.com/ElNgatia" target="_blank">💻 GitHub</a>
-      <a class="link-card" href="https://github.com/Solutech-Limited" target="_blank">🏢 Solutech Engineering</a>
       <a class="link-card" href="https://flutter.dev" target="_blank">🐦 Flutter</a>
       <a class="link-card" href="https://dart.dev" target="_blank">🎯 Dart</a>
     </div>

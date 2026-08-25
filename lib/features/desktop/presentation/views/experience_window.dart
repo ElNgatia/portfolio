@@ -3,7 +3,6 @@ import 'package:portfolio/core/skin.dart';
 import 'package:portfolio/features/desktop/data/experience_data.dart';
 import 'package:portfolio/features/desktop/domain/entity/experience.dart';
 import 'package:portfolio/features/desktop/presentation/widgets/metric_strip.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class ExperienceWindow extends StatelessWidget {
   const ExperienceWindow({super.key});
@@ -238,27 +237,6 @@ class _ExperienceCard extends StatelessWidget {
                           ),
                         ],
 
-                        // Public repositories
-                        if (experience.repositories.isNotEmpty) ...[
-                          const SizedBox(height: 10),
-                          Text(
-                            'Public repositories',
-                            style: TextStyle(
-                              fontSize: 11,
-                              fontWeight: FontWeight.w700,
-                              letterSpacing: 0.4,
-                              color: skin.headingColor,
-                            ),
-                          ),
-                          const SizedBox(height: 6),
-                          ...experience.repositories.map(
-                            (repo) => Padding(
-                              padding: const EdgeInsets.only(bottom: 5),
-                              child: _WorkRepoRow(repo: repo),
-                            ),
-                          ),
-                        ],
-
                         // Skills
                         if (experience.skills.isNotEmpty) ...[
                           const SizedBox(height: 8),
@@ -326,94 +304,6 @@ class _MetaItem extends StatelessWidget {
           style: TextStyle(fontSize: 11, color: skin.iconMuted),
         ),
       ],
-    );
-  }
-}
-
-class _WorkRepoRow extends StatelessWidget {
-  const _WorkRepoRow({required this.repo});
-
-  final WorkRepository repo;
-
-  Future<void> _open() async {
-    final uri = Uri.parse(repo.url);
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(uri, mode: LaunchMode.externalApplication);
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final skin = SkinPalette.of(context);
-    return MouseRegion(
-      cursor: SystemMouseCursors.click,
-      child: GestureDetector(
-        onTap: _open,
-        child: Container(
-          width: double.infinity,
-          padding: const EdgeInsets.all(8),
-          decoration: BoxDecoration(
-            color: skin.cardHeaderBackground,
-            border: Border.all(color: skin.cardBorder),
-            borderRadius: BorderRadius.circular(3),
-          ),
-          child: Row(
-            children: [
-              Icon(Icons.code, size: 13, color: skin.accent),
-              const SizedBox(width: 6),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      '${repo.name} ↗',
-                      style: TextStyle(
-                        fontSize: 11.5,
-                        fontWeight: FontWeight.w600,
-                        color: skin.accent,
-                      ),
-                    ),
-                    if (repo.description != null)
-                      Padding(
-                        padding: const EdgeInsets.only(top: 1),
-                        child: Text(
-                          repo.description!,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontSize: 10.5,
-                            height: 1.3,
-                            color: skin.textMuted,
-                          ),
-                        ),
-                      ),
-                  ],
-                ),
-              ),
-              if (repo.commits != null) ...[
-                const SizedBox(width: 8),
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                  decoration: BoxDecoration(
-                    color: skin.pageBackground,
-                    border: Border.all(color: skin.cardBorder),
-                    borderRadius: BorderRadius.circular(2),
-                  ),
-                  child: Text(
-                    '${repo.commits} commits',
-                    style: TextStyle(
-                      fontSize: 10,
-                      fontWeight: FontWeight.w600,
-                      color: skin.chipText,
-                    ),
-                  ),
-                ),
-              ],
-            ],
-          ),
-        ),
-      ),
     );
   }
 }
