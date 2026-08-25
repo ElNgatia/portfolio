@@ -31,6 +31,48 @@ const List<Experience> workExperience = [
       'GitHub Actions',
       'Production debugging',
     ],
+    repositories: [
+      // Public Solutech-Limited repos; commit counts verified via the
+      // GitHub contributors API on 2026-08-25.
+      WorkRepository(
+        name: 'solutech-sat-360',
+        url: 'https://github.com/Solutech-Limited/solutech-sat-360',
+        description:
+            'Cross-platform Solutech SAT with clean architecture and best practices.',
+        commits: 1394,
+      ),
+      WorkRepository(
+        name: 'solutech-sat',
+        url: 'https://github.com/Solutech-Limited/solutech-sat',
+        description: 'Sales Automation Tool used by field teams.',
+        commits: 589,
+      ),
+      WorkRepository(
+        name: 'solutech-sat-admin',
+        url: 'https://github.com/Solutech-Limited/solutech-sat-admin',
+        description: 'Admin companion app for the SAT platform.',
+        commits: 59,
+      ),
+      WorkRepository(
+        name: 'fleet-tv-app',
+        url: 'https://github.com/Solutech-Limited/fleet-tv-app',
+        description: 'Fleet monitoring dashboard for TV displays.',
+        commits: 3,
+      ),
+      WorkRepository(
+        name: 'kazitime',
+        url: 'https://github.com/Solutech-Limited/kazitime',
+        description: 'Time-tracking product.',
+        commits: 4,
+      ),
+      WorkRepository(
+        name: 'askeva-mobile',
+        url: 'https://github.com/Solutech-Limited/askeva-mobile',
+        description:
+            "AskEVA — Solutech's conversational AI analytics assistant (Flutter).",
+        commits: 1,
+      ),
+    ],
   ),
   Experience(
     role: 'Mobile Engineer',

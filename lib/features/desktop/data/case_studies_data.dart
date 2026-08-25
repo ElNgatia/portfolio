@@ -68,6 +68,7 @@ const List<CaseStudy> caseStudies = [
       'Mapped existing customer workflows (sales orders, payments, printing, notifications) to identify what could not break during migration.',
       'Identified state-management complexity as the primary scaling bottleneck for feature delivery.',
       'Assessed local persistence and synchronization requirements for field users with unreliable connectivity.',
+      'Public evidence of the modernization work: the Solutech-Limited organization hosts the SAT codebases, including 1,394+ commits on the cross-platform rebuild (solutech-sat-360) and 589 on the previous generation (solutech-sat).',
     ],
     decisions: [
       'Adopted Riverpod-based state management to make dependency injection predictable and feature delivery scalable across complex modules.',
