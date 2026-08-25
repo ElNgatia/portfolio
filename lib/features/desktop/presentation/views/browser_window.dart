@@ -147,8 +147,8 @@ class _BrowserWindowState extends State<BrowserWindow> {
         url = 'https://www.google.com/search?q=${Uri.encodeComponent(url)}';
       }
     }
-    // Typed navigations open in a real browser tab on every platform.
-    launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
+    _programmaticLoad = true;
+    _controller.loadRequest(Uri.parse(url));
     if (mounted) setState(() => _addressController.text = url);
   }
 
