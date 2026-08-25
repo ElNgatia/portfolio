@@ -1,6 +1,5 @@
 // ...existing code...
 import 'package:flutter/material.dart';
-import 'package:portfolio/features/desktop/data/metrics_data.dart';
 import 'package:portfolio/features/desktop/presentation/widgets/metric_strip.dart';
 
 // Windows 7 Aero palette
@@ -99,18 +98,6 @@ class AboutMeWindow extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Impact metrics strip
-                  const Text(
-                    'Impact',
-                    style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w700,
-                      color: _kWin7DarkHeader,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  const MetricStrip(metrics: impactMetrics),
-                  const SizedBox(height: 16),
                   const Text(
                     'About Me',
                     style: TextStyle(

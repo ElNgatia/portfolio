@@ -1,5 +1,4 @@
 import 'package:portfolio/features/desktop/domain/entity/case_study.dart';
-import 'package:portfolio/features/desktop/domain/entity/metric.dart';
 
 const List<CaseStudy> caseStudies = [
   CaseStudy(
@@ -26,13 +25,6 @@ const List<CaseStudy> caseStudies = [
     implementation: [
       'Reworked initialization so concurrent fan-out was replaced with controlled sequencing of resource-acquiring tasks.',
       'Kept genuinely independent work parallel where it did not contend for scarce system resources.',
-    ],
-    results: [
-      Metric(label: 'Startup failure rate (before)', value: '[VERIFY]'),
-      Metric(label: 'Startup failure rate (after)', value: '[VERIFY]'),
-      Metric(label: 'Peak concurrent requests (before)', value: '[VERIFY]'),
-      Metric(label: 'Peak concurrent requests (after)', value: '[VERIFY]'),
-      Metric(label: 'Affected devices', value: '[VERIFY]'),
     ],
     lesson:
         'Mobile performance is constrained by system resources such as file descriptors, sockets, memory and storage operations, not just CPU and frame rendering.',
@@ -87,17 +79,6 @@ const List<CaseStudy> caseStudies = [
       'Automated mobile build and release workflows with GitHub Actions and self-hosted infrastructure.',
       'Integrated Firebase services (Crashlytics, Notifications, App Distribution) for reliability and fast feedback cycles.',
     ],
-    results: [
-      Metric(
-        label: 'Deployment efficiency',
-        value: '30%',
-        context: 'Verified improvement in deployment workflow',
-        verified: true,
-      ),
-      Metric(label: 'Workflows migrated', value: '[VERIFY]'),
-      Metric(label: 'Users supported', value: '[VERIFY]'),
-      Metric(label: 'Releases shipped', value: '[VERIFY]'),
-    ],
     technologies: [
       'Flutter',
       'Dart',
@@ -133,11 +114,6 @@ const List<CaseStudy> caseStudies = [
     implementation: [
       'Repository layer abstracting local database vs remote API behind one interface.',
       'Sync/queue layer handling ordering, retries, backoff and conflict handling where applicable.',
-    ],
-    results: [
-      Metric(label: 'Offline transactions processed', value: '[VERIFY]'),
-      Metric(label: 'Sync success rate', value: '[VERIFY]'),
-      Metric(label: 'Supported offline workflows', value: '[VERIFY]'),
     ],
     lesson:
         'Offline-first is a product decision, not a database choice. The architecture diagram is simple; the edge cases — duplicates, conflicts, retries — are where the engineering lives.',
@@ -189,18 +165,6 @@ const List<CaseStudy> caseStudies = [
       'Built CI/CD pipelines around GitHub Actions with self-hosted runners and Docker.',
       'Automated builds, versioning and Play Store publishing paths.',
       'Set up Firebase App Distribution for automated delivery of test builds.',
-    ],
-    results: [
-      Metric(
-        label: 'Deployment efficiency',
-        value: '+30%',
-        context: 'Measured improvement within 4 months',
-        verified: true,
-      ),
-      Metric(label: 'Deployment time (before)', value: '[VERIFY]'),
-      Metric(label: 'Deployment time (after)', value: '[VERIFY]'),
-      Metric(label: 'Manual steps (before)', value: '[VERIFY]'),
-      Metric(label: 'Manual steps (after)', value: '[VERIFY]'),
     ],
     lesson:
         'Release automation pays for itself quickly: fewer manual errors, faster feedback cycles, and engineers who stop fearing release day.',

@@ -1,5 +1,3 @@
-import 'metric.dart';
-
 enum EvidenceType { image, diagram, code, log, metric }
 
 class EvidenceBlock {
@@ -25,7 +23,6 @@ class CaseStudy {
   final List<String> investigation;
   final List<String> decisions;
   final List<String> implementation;
-  final List<Metric> results;
   final String? lesson;
   final List<String> technologies;
   final List<EvidenceBlock> evidence;
@@ -39,7 +36,6 @@ class CaseStudy {
     this.investigation = const [],
     this.decisions = const [],
     this.implementation = const [],
-    this.results = const [],
     this.lesson,
     required this.technologies,
     this.evidence = const [],

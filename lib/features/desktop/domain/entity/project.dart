@@ -1,5 +1,3 @@
-import 'metric.dart';
-
 class Project {
   final String name;
   final String description;
@@ -13,8 +11,6 @@ class Project {
   /// My role in the project, e.g. "Solo developer" or "Mobile Engineer".
   final String? role;
 
-  final List<Metric> metrics;
-
   final bool isPending;
 
   const Project({
@@ -27,7 +23,6 @@ class Project {
     this.playStoreUrl,
     this.tags = const [],
     this.role,
-    this.metrics = const [],
     this.isPending = false,
   });
 }

@@ -1,4 +1,3 @@
-import 'package:portfolio/features/desktop/domain/entity/metric.dart';
 import 'package:portfolio/features/desktop/domain/entity/project.dart';
 
 /// Products I've shipped — presented as products with users and outcomes,
@@ -30,10 +29,6 @@ const List<Project> publishedProjects = [
     githubUrl: 'https://github.com/ElNgatia/Mpesa-Fees',
     role: 'Solo developer',
     tags: ['Flutter', 'Dart', 'Android'],
-    metrics: [
-      Metric(label: 'Installs', value: '[VERIFY]'),
-      Metric(label: 'Rating', value: '[VERIFY]'),
-    ],
   ),
   Project(
     name: 'Adventure Quest',

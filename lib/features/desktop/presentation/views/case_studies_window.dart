@@ -184,19 +184,6 @@ class _CaseStudyDetail extends StatelessWidget {
             const SizedBox(height: 14),
             _EvidenceWidget(block: block),
           ],
-          if (study.results.isNotEmpty) ...[
-            const SizedBox(height: 14),
-            const Text(
-              'Results',
-              style: TextStyle(
-                fontSize: 13,
-                fontWeight: FontWeight.w700,
-                color: _kWin7DarkHeader,
-              ),
-            ),
-            const SizedBox(height: 8),
-            MetricStrip(metrics: study.results),
-          ],
           if (study.lesson != null) ...[
             const SizedBox(height: 14),
             Container(

@@ -133,10 +133,6 @@ class _Win7ProjectCard extends StatelessWidget {
                     ),
                   ),
                 ],
-                if (project.metrics.isNotEmpty) ...[
-                  const SizedBox(height: 8),
-                  MetricStrip(metrics: project.metrics),
-                ],
                 if (project.tags.isNotEmpty) ...[
                   const SizedBox(height: 8),
                   Wrap(
