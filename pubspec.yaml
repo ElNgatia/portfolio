@@ -21,6 +21,7 @@ dependencies:
   pdfx: ^2.8.0
   webview_flutter: ^4.10.0
   webview_flutter_web: ^0.2.3+4
+  web: ^1.1.0
 
 dev_dependencies:
   riverpod_generator: ^3.0.3

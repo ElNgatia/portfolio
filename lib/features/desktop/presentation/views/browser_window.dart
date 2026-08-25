@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 // IE / Windows 7 palette
@@ -57,10 +58,11 @@ const _kHomePage = '''<!DOCTYPE html>
   <div class="content">
     <div class="section-title">Quick Links</div>
     <div class="links-grid">
-      <a class="link-card" href="https://pub.dev/publishers/ngatia.dev/packages" target="_top">📦 pub.dev packages</a>
-      <a class="link-card" href="https://github.com/ElNgatia" target="_top">💻 GitHub</a>
-      <a class="link-card" href="https://flutter.dev" target="_top">🐦 Flutter</a>
-      <a class="link-card" href="https://dart.dev" target="_top">🎯 Dart</a>
+      <a class="link-card" href="https://pub.dev/publishers/ngatia.dev/packages" target="_blank">📦 pub.dev packages</a>
+      <a class="link-card" href="https://github.com/ElNgatia" target="_blank">💻 GitHub</a>
+      <a class="link-card" href="https://github.com/Solutech-Limited" target="_blank">🏢 Solutech Engineering</a>
+      <a class="link-card" href="https://flutter.dev" target="_blank">🐦 Flutter</a>
+      <a class="link-card" href="https://dart.dev" target="_blank">🎯 Dart</a>
     </div>
     <div class="section-title">About This Browser</div>
     <div class="tip">
@@ -86,17 +88,47 @@ class _BrowserWindowState extends State<BrowserWindow> {
     text: 'about:home',
   );
 
+  /// True while a programmatic (address-bar/home) load is in flight so the
+  /// navigation delegate doesn't treat it as a user-clicked link.
+  bool _programmaticLoad = false;
+
   @override
   void initState() {
     super.initState();
-    _controller = WebViewController()..loadHtmlString(_kHomePage);
+    _controller = WebViewController()
+      ..setNavigationDelegate(
+        NavigationDelegate(
+          onNavigationRequest: (request) {
+            if (_programmaticLoad) {
+              _programmaticLoad = false;
+              return NavigationDecision.navigate;
+            }
+            final url = request.url;
+            if (url.startsWith('http://') || url.startsWith('https://')) {
+              launchUrl(
+                Uri.parse(url),
+                mode: LaunchMode.externalApplication,
+              );
+              return NavigationDecision.prevent;
+            }
+            return NavigationDecision.navigate;
+          },
+        ),
+      )
+      ..loadHtmlString(_kHomePage);
+    _controller.setJavaScriptMode(JavaScriptMode.unrestricted);
+  }
+
+  void _loadHome() {
+    _programmaticLoad = true;
+    _controller.loadHtmlString(_kHomePage);
+    if (mounted) setState(() => _addressController.text = 'about:home');
   }
 
   void _navigate(String input) {
     String url = input.trim();
     if (url.isEmpty || url == 'about:home') {
-      _controller.loadHtmlString(_kHomePage);
-      if (mounted) setState(() => _addressController.text = 'about:home');
+      _loadHome();
       return;
     }
     if (!url.startsWith('http://') && !url.startsWith('https://')) {
@@ -106,7 +138,9 @@ class _BrowserWindowState extends State<BrowserWindow> {
         url = 'https://www.google.com/search?q=${Uri.encodeComponent(url)}';
       }
     }
-    _controller.loadRequest(Uri.parse(url));
+    // Typed navigations open in a real browser tab as well, mirroring how
+    // IE7-era users expected external browsing to behave.
+    launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
     if (mounted) setState(() => _addressController.text = url);
   }
 
@@ -158,10 +192,7 @@ class _BrowserWindowState extends State<BrowserWindow> {
           _NavButton(
             icon: Icons.home,
             tooltip: 'Home',
-            onPressed: () {
-              _controller.loadHtmlString(_kHomePage);
-              setState(() => _addressController.text = 'about:home');
-            },
+            onPressed: _loadHome,
           ),
           const SizedBox(width: 6),
           Expanded(child: _buildAddressBar()),
