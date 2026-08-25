@@ -57,18 +57,18 @@ const List<CaseStudy> caseStudies = [
   CaseStudy(
     slug: 'legacy-sfa-modernization',
     title:
-        'Modernizing a decade-old field-sales application without stopping production delivery',
+        'Modernizing a mature field-sales application without stopping production delivery',
     summary:
-        'Modernized the architecture of a mature Sales Force Automation application while preserving offline workflows, backend compatibility and continuous production releases for field teams across Africa.',
+        'Modernized the architecture of a mature production application while preserving offline workflows, backend compatibility and continuous releases for daily users.',
     context:
-        'A mature Sales Force Automation application contains long-lived business workflows and operational constraints. Field agents depend on it daily; existing users and workflows still need to function while the modernization work introduces a newer architecture.',
+        'A mature application accumulates long-lived business workflows and operational constraints. Users depend on it daily; existing workflows still need to function while the modernization work introduces a newer architecture.',
     problem:
-        'The challenge was not simply replacing old code. The application needed modernization while preserving operational workflows — sales orders, route plans, timesheets, payments, printing, notifications — supporting offline usage, maintaining backend compatibility and continuing to ship production releases throughout.',
+        'The challenge was not simply replacing old code. The application needed modernization while preserving operational workflows — order capture, customer management and reporting — supporting offline usage, maintaining backend compatibility and continuing to ship production releases throughout.',
     investigation: [
-      'Mapped existing customer workflows (sales orders, payments, printing, notifications) to identify what could not break during migration.',
+      'Mapped existing customer-facing workflows to identify what could not break during migration.',
       'Identified state-management complexity as the primary scaling bottleneck for feature delivery.',
-      'Assessed local persistence and synchronization requirements for field users with unreliable connectivity.',
-      'Public evidence of the modernization work: the Solutech-Limited organization hosts the SAT codebases, including 1,394+ commits on the cross-platform rebuild (solutech-sat-360) and 589 on the previous generation (solutech-sat).',
+      'Assessed local persistence and synchronization requirements for users with unreliable connectivity.',
+      'Traced module boundaries and dependency graphs to plan an incremental migration path.',
     ],
     decisions: [
       'Adopted Riverpod-based state management to make dependency injection predictable and feature delivery scalable across complex modules.',
@@ -98,9 +98,9 @@ const List<CaseStudy> caseStudies = [
     summary:
         'Built around local persistence and synchronization so field workflows remain usable even when connectivity is unreliable.',
     context:
-        'Field teams operate in environments where connectivity is intermittent at best. The product requirement was not "support offline" as a nice-to-have — the offline path had to be the primary path, with synchronization restoring consistency whenever connectivity allowed.',
+        'Users operate in environments where connectivity is intermittent at best. The product requirement was not "support offline" as a nice-to-have — the offline path had to be the primary path, with synchronization restoring consistency whenever connectivity allowed.',
     problem:
-        'A cloud-first design would leave agents unable to record orders, payments or visits exactly when they are with customers. Reads and writes both had to work locally, with queued writes synchronizing safely once online.',
+        'A cloud-first design would leave users unable to record critical data exactly when they are working in the field. Reads and writes both had to work locally, with queued writes synchronizing safely once online.',
     investigation: [
       'Analyzed real connectivity patterns of field users to understand how long offline periods could last.',
       'Evaluated local persistence options against query patterns and sync needs.',

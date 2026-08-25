@@ -11,13 +11,13 @@ const List<Experience> workExperience = [
     employmentType: 'Full-time',
     isCurrent: true,
     description:
-        'Building and modernizing production mobile software for field operations, with responsibility spanning application architecture, offline workflows, reliability, release engineering and production debugging.',
+        'Building and modernizing production mobile software used daily by teams operating in the field, with responsibility spanning application architecture, offline workflows, reliability, release engineering and production debugging.',
     highlights: [
-      'Modernized a legacy Sales Force Automation application toward a maintainable Flutter/Riverpod architecture while preserving production workflows for field teams across African markets.',
-      'Designed offline-first data and synchronization workflows so field users could keep recording orders, payments and visits without reliable connectivity.',
+      'Modernized a mature production application toward a maintainable Flutter/Riverpod architecture while preserving live workflows for users across African markets.',
+      'Designed offline-first data and synchronization workflows so users could keep working without reliable connectivity.',
       'Diagnosed startup failures on resource-constrained Android hardware caused by excessive concurrent resource acquisition, then reworked initialization to control concurrency.',
       'Improved mobile deployment efficiency by 30% within 4 months through release automation with GitHub Actions, self-hosted infrastructure and Firebase App Distribution.',
-      'Supported production integrations including payments, notifications, printing, maps, analytics and device-specific workflows (e.g. Sunmi printers).',
+      'Delivered production integrations spanning notifications, maps, analytics and hardware peripherals.',
       'Wrote unit and widget tests to keep refactoring safe during active feature delivery on a live product.',
     ],
     skills: [
@@ -30,48 +30,6 @@ const List<Experience> workExperience = [
       'CI/CD',
       'GitHub Actions',
       'Production debugging',
-    ],
-    repositories: [
-      // Public Solutech-Limited repos; commit counts verified via the
-      // GitHub contributors API on 2026-08-25.
-      WorkRepository(
-        name: 'solutech-sat-360',
-        url: 'https://github.com/Solutech-Limited/solutech-sat-360',
-        description:
-            'Cross-platform Solutech SAT with clean architecture and best practices.',
-        commits: 1394,
-      ),
-      WorkRepository(
-        name: 'solutech-sat',
-        url: 'https://github.com/Solutech-Limited/solutech-sat',
-        description: 'Sales Automation Tool used by field teams.',
-        commits: 589,
-      ),
-      WorkRepository(
-        name: 'solutech-sat-admin',
-        url: 'https://github.com/Solutech-Limited/solutech-sat-admin',
-        description: 'Admin companion app for the SAT platform.',
-        commits: 59,
-      ),
-      WorkRepository(
-        name: 'fleet-tv-app',
-        url: 'https://github.com/Solutech-Limited/fleet-tv-app',
-        description: 'Fleet monitoring dashboard for TV displays.',
-        commits: 3,
-      ),
-      WorkRepository(
-        name: 'kazitime',
-        url: 'https://github.com/Solutech-Limited/kazitime',
-        description: 'Time-tracking product.',
-        commits: 4,
-      ),
-      WorkRepository(
-        name: 'askeva-mobile',
-        url: 'https://github.com/Solutech-Limited/askeva-mobile',
-        description:
-            "AskEVA — Solutech's conversational AI analytics assistant (Flutter).",
-        commits: 1,
-      ),
     ],
   ),
   Experience(

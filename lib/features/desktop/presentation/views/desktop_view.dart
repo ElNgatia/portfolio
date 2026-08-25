@@ -6,6 +6,7 @@ import 'package:portfolio/core/window_routes.dart';
 import 'package:portfolio/features/desktop/desktop.dart';
 import 'package:portfolio/features/desktop/domain/entity/window_entity.dart';
 import 'package:portfolio/features/desktop/presentation/provider/window_manager.dart';
+import 'package:portfolio/features/phone/phone.dart';
 import 'package:portfolio/features/settings/settings.dart';
 
 class DesktopView extends ConsumerStatefulWidget {
@@ -67,6 +68,19 @@ class _DesktopViewState extends ConsumerState<DesktopView> {
         _syncUrlHash(next);
       }
     });
+
+    // Narrow viewports get the Windows Phone (Metro) shell instead of the
+    // desktop metaphor: a tile-based Start screen and full-screen apps.
+    if (isMobile) {
+      final activeWindow = ref.watch(windowManagerProvider).values
+          .where((w) => w.isOpen && !w.isMinimized)
+          .toList()
+          .lastOrNull;
+
+      return activeWindow == null
+          ? const MetroStartView()
+          : MetroAppPage(window: activeWindow);
+    }
 
     return Stack(
       children: [

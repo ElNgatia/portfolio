@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:portfolio/core/skin.dart';
+import 'package:portfolio/features/desktop/presentation/widgets/metric_strip.dart';
 import 'package:portfolio/features/settings/presentation/provider/settings_provider.dart';
 
 class SettingsWindow extends ConsumerStatefulWidget {
@@ -23,26 +25,14 @@ class _SettingsWindowState extends ConsumerState<SettingsWindow> {
   Widget build(BuildContext context) {
     final settings = ref.watch(settingsProvider);
     final notifier = ref.read(settingsProvider.notifier);
+    final skin = SkinPalette.of(context);
 
     return Container(
-      color: const Color(0xFFECE9D8),
+      color: skin.pageBackground,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Settings header
-          Container(
-            width: double.infinity,
-            color: const Color(0xFF0A246A),
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-            child: const Text(
-              'Desktop Background',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
+          const WindowSectionHeader(title: 'Desktop Background'),
 
           Expanded(
             child: Padding(
@@ -50,11 +40,11 @@ class _SettingsWindowState extends ConsumerState<SettingsWindow> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
+                  Text(
                     'Choose your desktop background',
                     style: TextStyle(
                       fontSize: 13,
-                      color: Color(0xFF000000),
+                      color: skin.textPrimary,
                     ),
                   ),
                   const SizedBox(height: 12),
@@ -64,7 +54,7 @@ class _SettingsWindowState extends ConsumerState<SettingsWindow> {
                     height: 120,
                     width: double.infinity,
                     decoration: BoxDecoration(
-                      border: Border.all(color: const Color(0xFF7A9FCC)),
+                      border: Border.all(color: skin.cardBorder),
                       borderRadius: BorderRadius.circular(4),
                     ),
                     child: ClipRRect(
@@ -75,12 +65,12 @@ class _SettingsWindowState extends ConsumerState<SettingsWindow> {
 
                   const SizedBox(height: 16),
 
-                  const Text(
+                  Text(
                     'Select a wallpaper:',
                     style: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.bold,
-                      color: Color(0xFF000000),
+                      color: skin.textPrimary,
                     ),
                   ),
                   const SizedBox(height: 8),
@@ -116,16 +106,14 @@ class _SettingsWindowState extends ConsumerState<SettingsWindow> {
           Container(
             width: double.infinity,
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            decoration: const BoxDecoration(
-              color: Color(0xFFD4D0C8),
-              border: Border(
-                top: BorderSide(color: Color(0xFF808080)),
-              ),
+            decoration: BoxDecoration(
+              color: skin.footerBarBackground,
+              border: Border(top: BorderSide(color: skin.divider)),
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                _Win7Button(
+                _SkinButton(
                   label: 'OK',
                   onPressed: () {
                     // Changes are already applied live; record new baseline.
@@ -133,7 +121,7 @@ class _SettingsWindowState extends ConsumerState<SettingsWindow> {
                   },
                 ),
                 const SizedBox(width: 8),
-                _Win7Button(
+                _SkinButton(
                   label: 'Cancel',
                   onPressed: () {
                     // Revert to the wallpaper that was active when the
@@ -178,6 +166,7 @@ class _WallpaperTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final skin = SkinPalette.of(context);
     return GestureDetector(
       onTap: onTap,
       child: Column(
@@ -186,20 +175,10 @@ class _WallpaperTile extends StatelessWidget {
             child: Container(
               decoration: BoxDecoration(
                 border: Border.all(
-                  color: isSelected
-                      ? const Color(0xFF0078D7)
-                      : const Color(0xFF808080),
+                  color: isSelected ? skin.accent : skin.chipBorder,
                   width: isSelected ? 2.5 : 1,
                 ),
                 borderRadius: BorderRadius.circular(3),
-                boxShadow: isSelected
-                    ? [
-                        const BoxShadow(
-                          color: Color(0x440078D7),
-                          blurRadius: 6,
-                        ),
-                      ]
-                    : null,
               ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(2),
@@ -212,9 +191,7 @@ class _WallpaperTile extends StatelessWidget {
             option.label,
             style: TextStyle(
               fontSize: 10,
-              color: isSelected
-                  ? const Color(0xFF0078D7)
-                  : const Color(0xFF000000),
+              color: isSelected ? skin.accent : skin.textPrimary,
               fontWeight:
                   isSelected ? FontWeight.bold : FontWeight.normal,
             ),
@@ -240,21 +217,22 @@ class _WallpaperTile extends StatelessWidget {
   }
 }
 
-class _Win7Button extends StatefulWidget {
-  const _Win7Button({required this.label, required this.onPressed});
+class _SkinButton extends StatefulWidget {
+  const _SkinButton({required this.label, required this.onPressed});
 
   final String label;
   final VoidCallback onPressed;
 
   @override
-  State<_Win7Button> createState() => _Win7ButtonState();
+  State<_SkinButton> createState() => _SkinButtonState();
 }
 
-class _Win7ButtonState extends State<_Win7Button> {
+class _SkinButtonState extends State<_SkinButton> {
   bool _hovered = false;
 
   @override
   Widget build(BuildContext context) {
+    final skin = SkinPalette.of(context);
     return MouseRegion(
       onEnter: (_) => setState(() => _hovered = true),
       onExit: (_) => setState(() => _hovered = false),
@@ -267,23 +245,20 @@ class _Win7ButtonState extends State<_Win7Button> {
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               colors: _hovered
-                  ? [const Color(0xFFE5F3FF), const Color(0xFFCCE4FF)]
-                  : [const Color(0xFFF5F5F5), const Color(0xFFDCDCDC)],
+                  ? [skin.hoverBackground, skin.hoverBackground]
+                  : [skin.buttonTop, skin.buttonBottom],
             ),
             border: Border.all(
-              color: _hovered
-                  ? const Color(0xFF3C9BE0)
-                  : const Color(0xFFADADAD),
+              color: _hovered ? skin.accent : skin.buttonBorder,
             ),
             borderRadius: BorderRadius.circular(3),
           ),
           child: Text(
             widget.label,
-            style: const TextStyle(fontSize: 12, color: Colors.black),
+            style: TextStyle(fontSize: 12, color: skin.textPrimary),
           ),
         ),
       ),
     );
   }
 }
-
