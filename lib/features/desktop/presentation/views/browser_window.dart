@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -95,8 +96,11 @@ class _BrowserWindowState extends State<BrowserWindow> {
   @override
   void initState() {
     super.initState();
-    _controller = WebViewController()
-      ..setNavigationDelegate(
+    _controller = WebViewController();
+    // NavigationDelegate is unsupported by webview_flutter_web; on the web
+    // the home page's target="_blank" links open real browser tabs instead.
+    if (!kIsWeb) {
+      _controller.setNavigationDelegate(
         NavigationDelegate(
           onNavigationRequest: (request) {
             if (_programmaticLoad) {
@@ -114,8 +118,9 @@ class _BrowserWindowState extends State<BrowserWindow> {
             return NavigationDecision.navigate;
           },
         ),
-      )
-      ..loadHtmlString(_kHomePage);
+      );
+    }
+    _controller.loadHtmlString(_kHomePage);
     _controller.setJavaScriptMode(JavaScriptMode.unrestricted);
   }
 
@@ -138,8 +143,7 @@ class _BrowserWindowState extends State<BrowserWindow> {
         url = 'https://www.google.com/search?q=${Uri.encodeComponent(url)}';
       }
     }
-    // Typed navigations open in a real browser tab as well, mirroring how
-    // IE7-era users expected external browsing to behave.
+    // Typed navigations open in a real browser tab on every platform.
     launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
     if (mounted) setState(() => _addressController.text = url);
   }
