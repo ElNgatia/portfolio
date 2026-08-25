@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:portfolio/core/skin.dart';
 import 'package:portfolio/features/desktop/data/case_studies_data.dart';
 import 'package:portfolio/features/desktop/domain/entity/case_study.dart';
 import 'package:portfolio/features/desktop/presentation/widgets/metric_strip.dart';
-
-// Windows 7 Aero palette
-const _kWin7DarkHeader = Color(0xFF0A246A);
-const _kWin7CardBorder = Color(0xFFADCDEF);
-const _kWin7SectionBg = Color(0xFFEFF4FB);
 
 /// Case studies window: master list of studies; tapping one opens the
 /// full story (context → problem → investigation → decisions → results).
@@ -22,12 +18,13 @@ class _CaseStudiesWindowState extends State<CaseStudiesWindow> {
 
   @override
   Widget build(BuildContext context) {
+    final skin = SkinPalette.of(context);
     return Container(
-      color: const Color(0xFFFFFFFF),
+      color: skin.pageBackground,
       child: Column(
         children: [
-          const Win7SectionHeader(title: 'Case Studies'),
-          Container(height: 1, color: _kWin7CardBorder),
+          const WindowSectionHeader(title: 'Case Studies'),
+          Container(height: 1, color: skin.divider),
           Expanded(
             child: _selected == null
                 ? _buildList()
@@ -61,18 +58,19 @@ class _CaseStudyListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final skin = SkinPalette.of(context);
     return Container(
       margin: const EdgeInsets.only(bottom: 10),
       decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border.all(color: _kWin7CardBorder),
+        color: skin.cardBackground,
+        border: Border.all(color: skin.cardBorder),
         borderRadius: BorderRadius.circular(3),
       ),
       child: Material(
         color: Colors.transparent,
         child: InkWell(
           onTap: onTap,
-          hoverColor: _kWin7SectionBg,
+          hoverColor: skin.hoverBackground,
           child: Padding(
             padding: const EdgeInsets.all(14),
             child: Column(
@@ -80,20 +78,20 @@ class _CaseStudyListTile extends StatelessWidget {
               children: [
                 Text(
                   study.title,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 13,
-                    fontWeight: FontWeight.w700,
-                    color: _kWin7DarkHeader,
+                    fontWeight: skin.headingWeight,
+                    color: skin.headingColor,
                     height: 1.3,
                   ),
                 ),
                 const SizedBox(height: 6),
                 Text(
                   study.summary,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 12,
                     height: 1.45,
-                    color: Color(0xFF333333),
+                    color: skin.textSecondary,
                   ),
                 ),
                 const SizedBox(height: 8),
@@ -104,11 +102,10 @@ class _CaseStudyListTile extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 11,
                         fontWeight: FontWeight.w600,
-                        color: Colors.blue.shade700,
+                        color: skin.accent,
                       ),
                     ),
-                    Icon(Icons.arrow_forward,
-                        size: 12, color: Colors.blue.shade700),
+                    Icon(Icons.arrow_forward, size: 12, color: skin.accent),
                   ],
                 ),
               ],
@@ -128,6 +125,7 @@ class _CaseStudyDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final skin = SkinPalette.of(context);
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
       child: Column(
@@ -138,14 +136,14 @@ class _CaseStudyDetail extends StatelessWidget {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(Icons.arrow_back, size: 13, color: Colors.blue.shade700),
+                Icon(Icons.arrow_back, size: 13, color: skin.accent),
                 const SizedBox(width: 4),
                 Text(
                   'All case studies',
                   style: TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.w600,
-                    color: Colors.blue.shade700,
+                    color: skin.accent,
                   ),
                 ),
               ],
@@ -154,32 +152,32 @@ class _CaseStudyDetail extends StatelessWidget {
           const SizedBox(height: 10),
           Text(
             study.title,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 17,
-              fontWeight: FontWeight.w700,
+              fontWeight: skin.headingWeight,
               height: 1.3,
-              color: _kWin7DarkHeader,
+              color: skin.headingColor,
             ),
           ),
           const SizedBox(height: 4),
           Text(
             study.summary,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 12.5,
               fontStyle: FontStyle.italic,
               height: 1.45,
-              color: Color(0xFF444444),
+              color: skin.textTertiary,
             ),
           ),
           const SizedBox(height: 16),
-          _section('Context', [study.context]),
-          _section('Problem', [study.problem]),
+          _section(context, 'Context', [study.context]),
+          _section(context, 'Problem', [study.problem]),
           if (study.investigation.isNotEmpty)
-            _section('Investigation', study.investigation),
+            _section(context, 'Investigation', study.investigation),
           if (study.decisions.isNotEmpty)
-            _section('Technical decisions', study.decisions),
+            _section(context, 'Technical decisions', study.decisions),
           if (study.implementation.isNotEmpty)
-            _section('Implementation', study.implementation),
+            _section(context, 'Implementation', study.implementation),
           for (final block in study.evidence) ...[
             const SizedBox(height: 14),
             _EvidenceWidget(block: block),
@@ -190,30 +188,30 @@ class _CaseStudyDetail extends StatelessWidget {
               width: double.infinity,
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: _kWin7SectionBg,
-                border: Border.all(color: _kWin7CardBorder),
+                color: skin.cardHeaderBackground,
+                border: Border.all(color: skin.cardBorder),
                 borderRadius: BorderRadius.circular(3),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
+                  Text(
                     'What I learned',
                     style: TextStyle(
                       fontSize: 11,
                       fontWeight: FontWeight.w700,
                       letterSpacing: 0.5,
-                      color: _kWin7DarkHeader,
+                      color: skin.headingColor,
                     ),
                   ),
                   const SizedBox(height: 4),
                   Text(
                     study.lesson!,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 12.5,
                       height: 1.5,
                       fontWeight: FontWeight.w600,
-                      color: Color(0xFF333333),
+                      color: skin.textSecondary,
                     ),
                   ),
                 ],
@@ -229,14 +227,14 @@ class _CaseStudyDetail extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 7, vertical: 2),
                       decoration: BoxDecoration(
-                        color: const Color(0xFFF0F4F8),
-                        border: Border.all(color: const Color(0xFF9BB8D0)),
+                        color: skin.chipBackground,
+                        border: Border.all(color: skin.chipBorder),
                         borderRadius: BorderRadius.circular(2),
                       ),
                       child: Text(
                         tech,
-                        style: const TextStyle(
-                            fontSize: 10, color: Color(0xFF2567A5)),
+                        style:
+                            TextStyle(fontSize: 10, color: skin.chipText),
                       ),
                     ))
                 .toList(),
@@ -247,17 +245,18 @@ class _CaseStudyDetail extends StatelessWidget {
     );
   }
 
-  Widget _section(String title, List<String> paragraphs) {
+  Widget _section(BuildContext context, String title, List<String> paragraphs) {
+    final skin = SkinPalette.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const SizedBox(height: 14),
         Text(
           title,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 13,
-            fontWeight: FontWeight.w700,
-            color: _kWin7DarkHeader,
+            fontWeight: skin.headingWeight,
+            color: skin.headingColor,
           ),
         ),
         const SizedBox(height: 6),
@@ -266,10 +265,10 @@ class _CaseStudyDetail extends StatelessWidget {
             padding: const EdgeInsets.only(bottom: 8),
             child: Text(
               paragraph,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 12.5,
                 height: 1.55,
-                color: Color(0xFF1A1A1A),
+                color: skin.textPrimary,
               ),
             ),
           ),
@@ -285,16 +284,20 @@ class _EvidenceWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final skin = SkinPalette.of(context);
+    final isMonospace = block.type == EvidenceType.code ||
+        block.type == EvidenceType.log ||
+        block.type == EvidenceType.diagram;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (block.title != null)
           Text(
             block.title!,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 12,
               fontWeight: FontWeight.w600,
-              color: Color(0xFF444444),
+              color: skin.textTertiary,
             ),
           ),
         const SizedBox(height: 6),
@@ -303,9 +306,9 @@ class _EvidenceWidget extends StatelessWidget {
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
             color: block.type == EvidenceType.code || block.type == EvidenceType.log
-                ? const Color(0xFF1E1E1E)
-                : _kWin7SectionBg,
-            border: Border.all(color: _kWin7CardBorder),
+                ? skin.codeBackground
+                : skin.cardHeaderBackground,
+            border: Border.all(color: skin.cardBorder),
             borderRadius: BorderRadius.circular(3),
           ),
           child: Text(
@@ -313,14 +316,11 @@ class _EvidenceWidget extends StatelessWidget {
             style: TextStyle(
               fontSize: 11.5,
               height: 1.45,
-              fontFamily: block.type == EvidenceType.code ||
-                      block.type == EvidenceType.log || block.type == EvidenceType.diagram
-                  ? 'monospace'
-                  : null,
+              fontFamily: isMonospace ? 'monospace' : null,
               color: block.type == EvidenceType.code ||
                       block.type == EvidenceType.log
-                  ? const Color(0xFFD4D4D4)
-                  : const Color(0xFF333333),
+                  ? skin.codeText
+                  : skin.textSecondary,
             ),
           ),
         ),

@@ -1,33 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:portfolio/core/skin.dart';
 import 'package:portfolio/features/desktop/data/projects_data.dart';
 import 'package:portfolio/features/desktop/domain/entity/project.dart';
 import 'package:portfolio/features/desktop/presentation/widgets/metric_strip.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-// Windows 7 Aero palette
-const _kWin7Blue = Color(0xFF0078D7);
-const _kWin7CardBorder = Color(0xFFADCDEF);
-const _kWin7SectionBg = Color(0xFFEFF4FB);
-const _kWin7TagBg = Color(0xFFF0F4F8);
-const _kWin7TagBorder = Color(0xFF9BB8D0);
 
 class ProjectsWindow extends StatelessWidget {
   const ProjectsWindow({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final skin = SkinPalette.of(context);
     return Container(
-      color: const Color(0xFFFFFFFF),
+      color: skin.pageBackground,
       child: Column(
         children: [
-          const Win7SectionHeader(title: "Products I've shipped"),
-          Container(height: 1, color: _kWin7CardBorder),
+          const WindowSectionHeader(title: "Products I've shipped"),
+          Container(height: 1, color: skin.divider),
           Expanded(
             child: ListView.builder(
               padding: const EdgeInsets.all(12),
               itemCount: publishedProjects.length,
               itemBuilder: (context, index) =>
-                  _Win7ProjectCard(project: publishedProjects[index]),
+                  _ProjectCard(project: publishedProjects[index]),
             ),
           ),
         ],
@@ -36,26 +31,21 @@ class ProjectsWindow extends StatelessWidget {
   }
 }
 
-class _Win7ProjectCard extends StatelessWidget {
-  const _Win7ProjectCard({required this.project});
+class _ProjectCard extends StatelessWidget {
+  const _ProjectCard({required this.project});
 
   final Project project;
 
   @override
   Widget build(BuildContext context) {
+    final skin = SkinPalette.of(context);
     return Container(
       margin: const EdgeInsets.only(bottom: 10),
       decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border.all(color: _kWin7CardBorder),
+        color: skin.cardBackground,
+        border: Border.all(color: skin.cardBorder),
         borderRadius: BorderRadius.circular(3),
-        boxShadow: const [
-          BoxShadow(
-            color: Color(0x14000000),
-            blurRadius: 3,
-            offset: Offset(0, 1),
-          ),
-        ],
+        boxShadow: skin.cardShadow,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -64,10 +54,10 @@ class _Win7ProjectCard extends StatelessWidget {
           Container(
             width: double.infinity,
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
-            decoration: const BoxDecoration(
-              color: _kWin7SectionBg,
-              border: Border(bottom: BorderSide(color: _kWin7CardBorder)),
-              borderRadius: BorderRadius.only(
+            decoration: BoxDecoration(
+              color: skin.cardHeaderBackground,
+              border: Border(bottom: BorderSide(color: skin.divider)),
+              borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(2),
                 topRight: Radius.circular(2),
               ),
@@ -77,10 +67,10 @@ class _Win7ProjectCard extends StatelessWidget {
                 Expanded(
                   child: Text(
                     project.name,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 13,
-                      fontWeight: FontWeight.w700,
-                      color: Color(0xFF0A246A),
+                      fontWeight: skin.headingWeight,
+                      color: skin.headingColor,
                     ),
                   ),
                 ),
@@ -91,15 +81,15 @@ class _Win7ProjectCard extends StatelessWidget {
                       vertical: 2,
                     ),
                     decoration: BoxDecoration(
-                      color: const Color(0xFFFFF3E0),
-                      border: Border.all(color: const Color(0xFFFFB74D)),
+                      color: skin.warningBadge.background,
+                      border: Border.all(color: skin.warningBadge.border),
                       borderRadius: BorderRadius.circular(2),
                     ),
-                    child: const Text(
+                    child: Text(
                       'Pending review',
                       style: TextStyle(
                         fontSize: 10,
-                        color: Color(0xFFE65100),
+                        color: skin.warningBadge.text,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -116,20 +106,20 @@ class _Win7ProjectCard extends StatelessWidget {
               children: [
                 Text(
                   project.description,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 12,
                     height: 1.4,
-                    color: Color(0xFF1A1A1A),
+                    color: skin.textPrimary,
                   ),
                 ),
                 if (project.role != null) ...[
                   const SizedBox(height: 6),
                   Text(
                     'Role: ${project.role}',
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 11,
                       fontWeight: FontWeight.w600,
-                      color: Color(0xFF555555),
+                      color: skin.textMuted,
                     ),
                   ),
                 ],
@@ -139,7 +129,7 @@ class _Win7ProjectCard extends StatelessWidget {
                     spacing: 5,
                     runSpacing: 4,
                     children: project.tags
-                        .map((tag) => _Win7Tag(label: tag))
+                        .map((tag) => _ProjectTag(label: tag))
                         .toList(),
                   ),
                 ],
@@ -150,36 +140,36 @@ class _Win7ProjectCard extends StatelessWidget {
                     runSpacing: 4,
                     children: [
                       if (project.websiteUrl != null)
-                        _Win7LinkButton(
+                        _LinkButton(
                           label: 'Website',
                           icon: Icons.language_outlined,
                           url: project.websiteUrl!,
                         ),
                       if (project.pubDevUrl != null)
-                        _Win7LinkButton(
+                        _LinkButton(
                           label: 'pub.dev',
                           icon: Icons.widgets_outlined,
                           url: project.pubDevUrl!,
                         ),
                       if (project.playStoreUrl != null)
-                        _Win7LinkButton(
+                        _LinkButton(
                           label: 'Play Store',
                           icon: Icons.shop_outlined,
                           url: project.playStoreUrl!,
                         ),
                       if (project.chromeStoreUrl != null)
-                        _Win7LinkButton(
+                        _LinkButton(
                           label: 'Chrome Store',
                           icon: Icons.extension_outlined,
                           url: project.chromeStoreUrl!,
                         ),
                       if (project.isPending && project.chromeStoreUrl == null)
-                        _Win7DisabledButton(
+                        const _DisabledButton(
                           label: 'Chrome Store — Pending',
                           icon: Icons.extension_outlined,
                         ),
                       if (project.githubUrl != null)
-                        _Win7LinkButton(
+                        _LinkButton(
                           label: 'GitHub',
                           icon: Icons.code,
                           url: project.githubUrl!,
@@ -204,29 +194,30 @@ class _Win7ProjectCard extends StatelessWidget {
       project.githubUrl != null;
 }
 
-class _Win7Tag extends StatelessWidget {
-  const _Win7Tag({required this.label});
+class _ProjectTag extends StatelessWidget {
+  const _ProjectTag({required this.label});
   final String label;
 
   @override
   Widget build(BuildContext context) {
+    final skin = SkinPalette.of(context);
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
       decoration: BoxDecoration(
-        color: _kWin7TagBg,
-        border: Border.all(color: _kWin7TagBorder),
+        color: skin.chipBackground,
+        border: Border.all(color: skin.chipBorder),
         borderRadius: BorderRadius.circular(2),
       ),
       child: Text(
         label,
-        style: const TextStyle(fontSize: 10, color: Color(0xFF2567A5)),
+        style: TextStyle(fontSize: 10, color: skin.chipText),
       ),
     );
   }
 }
 
-class _Win7LinkButton extends StatefulWidget {
-  const _Win7LinkButton({
+class _LinkButton extends StatefulWidget {
+  const _LinkButton({
     required this.label,
     required this.icon,
     required this.url,
@@ -236,10 +227,10 @@ class _Win7LinkButton extends StatefulWidget {
   final String url;
 
   @override
-  State<_Win7LinkButton> createState() => _Win7LinkButtonState();
+  State<_LinkButton> createState() => _LinkButtonState();
 }
 
-class _Win7LinkButtonState extends State<_Win7LinkButton> {
+class _LinkButtonState extends State<_LinkButton> {
   bool _hovered = false;
 
   Future<void> _open() async {
@@ -255,6 +246,7 @@ class _Win7LinkButtonState extends State<_Win7LinkButton> {
 
   @override
   Widget build(BuildContext context) {
+    final skin = SkinPalette.of(context);
     return MouseRegion(
       onEnter: (_) => setState(() => _hovered = true),
       onExit: (_) => setState(() => _hovered = false),
@@ -267,13 +259,11 @@ class _Win7LinkButtonState extends State<_Win7LinkButton> {
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               colors: _hovered
-                  ? [const Color(0xFFE5F3FF), const Color(0xFFCCE4FF)]
-                  : [const Color(0xFFF5F5F5), const Color(0xFFDCDCDC)],
+                  ? [skin.hoverBackground, skin.hoverBackground]
+                  : [skin.buttonTop, skin.buttonBottom],
             ),
             border: Border.all(
-              color: _hovered
-                  ? const Color(0xFF3C9BE0)
-                  : const Color(0xFFADADAD),
+              color: _hovered ? skin.accent : skin.buttonBorder,
             ),
             borderRadius: BorderRadius.circular(3),
           ),
@@ -283,14 +273,15 @@ class _Win7LinkButtonState extends State<_Win7LinkButton> {
               Icon(
                 widget.icon,
                 size: 12,
-                color: _hovered ? _kWin7Blue : const Color(0xFF444444),
+                color: _hovered ? skin.accent : skin.textTertiary,
               ),
               const SizedBox(width: 4),
               Text(
                 widget.label,
                 style: TextStyle(
                   fontSize: 11,
-                  color: _hovered ? _kWin7Blue : const Color(0xFF1A1A1A),
+                  color:
+                      _hovered ? skin.accent : skin.textPrimary,
                 ),
               ),
             ],
@@ -301,28 +292,29 @@ class _Win7LinkButtonState extends State<_Win7LinkButton> {
   }
 }
 
-class _Win7DisabledButton extends StatelessWidget {
-  const _Win7DisabledButton({required this.label, required this.icon});
+class _DisabledButton extends StatelessWidget {
+  const _DisabledButton({required this.label, required this.icon});
   final String label;
   final IconData icon;
 
   @override
   Widget build(BuildContext context) {
+    final skin = SkinPalette.of(context);
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
       decoration: BoxDecoration(
-        color: const Color(0xFFF5F5F5),
-        border: Border.all(color: const Color(0xFFCCCCCC)),
+        color: skin.buttonTop,
+        border: Border.all(color: skin.iconDisabled),
         borderRadius: BorderRadius.circular(3),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 12, color: const Color(0xFFAAAAAA)),
+          Icon(icon, size: 12, color: skin.iconDisabled),
           const SizedBox(width: 4),
           Text(
             label,
-            style: const TextStyle(fontSize: 11, color: Color(0xFFAAAAAA)),
+            style: TextStyle(fontSize: 11, color: skin.iconDisabled),
           ),
         ],
       ),

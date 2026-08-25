@@ -1,40 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:portfolio/core/skin.dart';
+import 'package:portfolio/features/desktop/presentation/widgets/metric_strip.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-// Windows 7 Aero palette
-const _kWin7DarkHeader = Color(0xFF0A246A);
-const _kWin7Blue = Color(0xFF0078D7);
-const _kWin7CardBorder = Color(0xFFADCDEF);
-const _kWin7SectionBg = Color(0xFFEFF4FB);
 
 class ContactWindow extends StatelessWidget {
   const ContactWindow({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final skin = SkinPalette.of(context);
     return Container(
-      color: const Color(0xFFFFFFFF),
+      color: skin.pageBackground,
       child: Column(
         children: [
-          // Win7-style section header
-          Container(
-            width: double.infinity,
-            color: _kWin7DarkHeader,
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-            child: const Text(
-              'Contact',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
+          const WindowSectionHeader(title: 'Contact'),
 
           // Profile banner
           Container(
             width: double.infinity,
-            color: _kWin7SectionBg,
+            color: skin.cardHeaderBackground,
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             child: Row(
               children: [
@@ -43,8 +27,8 @@ class ContactWindow extends StatelessWidget {
                   height: 56,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    border: Border.all(color: _kWin7CardBorder, width: 2),
-                    color: const Color(0xFF2567A5),
+                    border: Border.all(color: skin.cardBorder, width: 2),
+                    color: skin.avatarBackground,
                   ),
                   child: const Icon(
                     Icons.person,
@@ -56,34 +40,32 @@ class ContactWindow extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
+                    Text(
                       'Elvis Ngatia',
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w700,
-                        color: Color(0xFF0A246A),
+                        color: skin.headingColor,
                       ),
                     ),
                     const SizedBox(height: 2),
-                    const Text(
+                    Text(
                       'Flutter Mobile Engineer',
-                      style: TextStyle(fontSize: 12, color: Color(0xFF555555)),
+                      style: TextStyle(fontSize: 12, color: skin.textMuted),
                     ),
                     const SizedBox(height: 3),
-                    const Row(
+                    Row(
                       children: [
                         Icon(
                           Icons.location_on_outlined,
                           size: 11,
-                          color: Color(0xFF666666),
+                          color: skin.iconMuted,
                         ),
-                        SizedBox(width: 3),
+                        const SizedBox(width: 3),
                         Text(
                           'Nairobi, Kenya',
-                          style: TextStyle(
-                            fontSize: 11,
-                            color: Color(0xFF666666),
-                          ),
+                          style:
+                              TextStyle(fontSize: 11, color: skin.iconMuted),
                         ),
                       ],
                     ),
@@ -93,7 +75,7 @@ class ContactWindow extends StatelessWidget {
             ),
           ),
 
-          Container(height: 1, color: _kWin7CardBorder),
+          Container(height: 1, color: skin.divider),
 
           // Contact items
           Expanded(
@@ -102,35 +84,35 @@ class ContactWindow extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
+                  Text(
                     'GET IN TOUCH',
                     style: TextStyle(
                       fontSize: 10,
                       fontWeight: FontWeight.w700,
-                      color: Color(0xFF6A7A8A),
+                      color: skin.textMuted,
                       letterSpacing: 0.8,
                     ),
                   ),
                   const SizedBox(height: 8),
-                  const _ContactRow(
+                  _ContactRow(
                     icon: Icons.email_outlined,
                     label: 'Email',
                     value: 'ngatiaelvisw@gmail.com',
                     url: 'mailto:ngatiaelvisw@gmail.com',
                   ),
-                  const _ContactRow(
+                  _ContactRow(
                     icon: Icons.code,
                     label: 'GitHub',
                     value: 'github.com/ElNgatia',
                     url: 'https://github.com/ElNgatia',
                   ),
-                  const _ContactRow(
+                  _ContactRow(
                     icon: Icons.alternate_email,
                     label: 'Twitter / X',
                     value: '@ngatiaelvis_',
                     url: 'https://www.x.com/ngatiaelvis_',
                   ),
-                  const _ContactRow(
+                  _ContactRow(
                     icon: Icons.message_outlined,
                     label: 'Discord',
                     value: 'blindbandit_bmc',
@@ -141,16 +123,16 @@ class ContactWindow extends StatelessWidget {
                     width: double.infinity,
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
-                      color: _kWin7SectionBg,
-                      border: Border.all(color: _kWin7CardBorder),
+                      color: skin.cardHeaderBackground,
+                      border: Border.all(color: skin.cardBorder),
                       borderRadius: BorderRadius.circular(3),
                     ),
-                    child: const Text(
+                    child: Text(
                       "Open to collaborations, freelance projects, and exciting opportunities. Don't hesitate to reach out!",
                       style: TextStyle(
                         fontSize: 13,
                         fontWeight: FontWeight.w600,
-                        color: Color(0xFF0A246A),
+                        color: skin.headingColor,
                         height: 1.5,
                       ),
                     ),
@@ -198,6 +180,7 @@ class _ContactRowState extends State<_ContactRow> {
 
   @override
   Widget build(BuildContext context) {
+    final skin = SkinPalette.of(context);
     return Padding(
       padding: const EdgeInsets.only(bottom: 8),
       child: MouseRegion(
@@ -209,20 +192,12 @@ class _ContactRowState extends State<_ContactRow> {
             duration: const Duration(milliseconds: 100),
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
             decoration: BoxDecoration(
-              color: _hovered ? const Color(0xFFE5F3FF) : Colors.white,
+              color: _hovered ? skin.hoverBackground : skin.cardBackground,
               border: Border.all(
-                color: _hovered
-                    ? const Color(0xFF3C9BE0)
-                    : _kWin7CardBorder,
+                color: _hovered ? skin.accent : skin.cardBorder,
               ),
               borderRadius: BorderRadius.circular(3),
-              boxShadow: const [
-                BoxShadow(
-                  color: Color(0x10000000),
-                  blurRadius: 2,
-                  offset: Offset(0, 1),
-                ),
-              ],
+              boxShadow: skin.cardShadow,
             ),
             child: Row(
               children: [
@@ -230,7 +205,7 @@ class _ContactRowState extends State<_ContactRow> {
                   width: 32,
                   height: 32,
                   decoration: BoxDecoration(
-                    color: _hovered ? _kWin7Blue : const Color(0xFF2567A5),
+                    color: _hovered ? skin.accent : skin.avatarBackground,
                     borderRadius: BorderRadius.circular(3),
                   ),
                   child: Icon(
@@ -246,9 +221,9 @@ class _ContactRowState extends State<_ContactRow> {
                     children: [
                       Text(
                         widget.label,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 11,
-                          color: Color(0xFF666666),
+                          color: skin.textMuted,
                         ),
                       ),
                       const SizedBox(height: 1),
@@ -257,9 +232,7 @@ class _ContactRowState extends State<_ContactRow> {
                         style: TextStyle(
                           fontSize: 13,
                           fontWeight: FontWeight.w600,
-                          color: _hovered
-                              ? _kWin7Blue
-                              : const Color(0xFF0A246A),
+                          color: _hovered ? skin.accent : skin.headingColor,
                         ),
                       ),
                     ],
@@ -268,9 +241,7 @@ class _ContactRowState extends State<_ContactRow> {
                 Icon(
                   Icons.open_in_new,
                   size: 14,
-                  color: _hovered
-                      ? _kWin7Blue
-                      : const Color(0xFFBBBBBB),
+                  color: _hovered ? skin.accent : skin.iconDisabled,
                 ),
               ],
             ),

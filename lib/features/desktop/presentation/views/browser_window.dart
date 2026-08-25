@@ -1,13 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:portfolio/core/skin.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-
-// IE / Windows 7 palette
-const _kIEToolbarBg = Color(0xFFECF3FC);
-const _kIEToolbarBorder = Color(0xFFC5D5E8);
-const _kIEBlue = Color(0xFF0057A5);
-const _kStatusBarBg = Color(0xFFEFF4FB);
 
 const _kHomePage = '''<!DOCTYPE html>
 <html lang="en">
@@ -170,11 +165,12 @@ class _BrowserWindowState extends State<BrowserWindow> {
   }
 
   Widget _buildToolbar() {
+    final skin = SkinPalette.of(context);
     return Container(
       height: 38,
-      decoration: const BoxDecoration(
-        color: _kIEToolbarBg,
-        border: Border(bottom: BorderSide(color: _kIEToolbarBorder)),
+      decoration: BoxDecoration(
+        color: skin.cardHeaderBackground,
+        border: Border(bottom: BorderSide(color: skin.divider)),
       ),
       padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 5),
       child: Row(
@@ -205,25 +201,26 @@ class _BrowserWindowState extends State<BrowserWindow> {
           const SizedBox(width: 6),
           Expanded(child: _buildAddressBar()),
           const SizedBox(width: 4),
-          _IEGoButton(onPressed: () => _navigate(_addressController.text)),
+          _GoButton(onPressed: () => _navigate(_addressController.text)),
         ],
       ),
     );
   }
 
   Widget _buildAddressBar() {
+    final skin = SkinPalette.of(context);
     return Container(
       height: 26,
       decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border.all(color: _kIEToolbarBorder),
+        color: skin.pageBackground,
+        border: Border.all(color: skin.chipBorder),
         borderRadius: BorderRadius.circular(2),
       ),
       padding: const EdgeInsets.symmetric(horizontal: 8),
       alignment: Alignment.center,
       child: TextField(
         controller: _addressController,
-        style: const TextStyle(fontSize: 12),
+        style: TextStyle(fontSize: 12, color: skin.textPrimary),
         decoration: const InputDecoration(
           border: InputBorder.none,
           contentPadding: EdgeInsets.zero,
@@ -235,29 +232,30 @@ class _BrowserWindowState extends State<BrowserWindow> {
   }
 
   Widget _buildStatusBar() {
+    final skin = SkinPalette.of(context);
     return Container(
       height: 22,
-      decoration: const BoxDecoration(
-        color: _kStatusBarBg,
-        border: Border(top: BorderSide(color: _kIEToolbarBorder)),
+      decoration: BoxDecoration(
+        color: skin.chipBackground,
+        border: Border(top: BorderSide(color: skin.divider)),
       ),
       padding: const EdgeInsets.symmetric(horizontal: 8),
-      child: const Row(
+      child: Row(
         children: [
           Expanded(
             child: Text(
               'Done',
-              style: TextStyle(fontSize: 11, color: Color(0xFF444444)),
+              style: TextStyle(fontSize: 11, color: skin.textTertiary),
               overflow: TextOverflow.ellipsis,
             ),
           ),
           Row(
             children: [
-              Icon(Icons.language, size: 12, color: _kIEBlue),
-              SizedBox(width: 4),
+              Icon(Icons.language, size: 12, color: skin.accent),
+              const SizedBox(width: 4),
               Text(
                 'Internet Explorer',
-                style: TextStyle(fontSize: 11, color: _kIEBlue),
+                style: TextStyle(fontSize: 11, color: skin.accent),
               ),
             ],
           ),
@@ -280,6 +278,7 @@ class _NavButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final skin = SkinPalette.of(context);
     return Tooltip(
       message: tooltip,
       child: InkWell(
@@ -291,9 +290,7 @@ class _NavButton extends StatelessWidget {
           child: Icon(
             icon,
             size: 16,
-            color: onPressed != null
-                ? const Color(0xFF444444)
-                : const Color(0xFFBBBBBB),
+            color: onPressed != null ? skin.textTertiary : skin.iconDisabled,
           ),
         ),
       ),
@@ -301,56 +298,55 @@ class _NavButton extends StatelessWidget {
   }
 }
 
-class _IEGoButton extends StatefulWidget {
-  const _IEGoButton({required this.onPressed});
+class _GoButton extends StatefulWidget {
+  const _GoButton({required this.onPressed});
 
   final VoidCallback onPressed;
 
   @override
-  State<_IEGoButton> createState() => _IEGoButtonState();
+  State<_GoButton> createState() => _GoButtonState();
 }
 
-class _IEGoButtonState extends State<_IEGoButton> {
+class _GoButtonState extends State<_GoButton> {
   bool _hovered = false;
 
   @override
   Widget build(BuildContext context) {
+    final skin = SkinPalette.of(context);
     return MouseRegion(
       onEnter: (_) => setState(() => _hovered = true),
       onExit: (_) => setState(() => _hovered = false),
       child: GestureDetector(
         onTap: widget.onPressed,
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: _hovered
-                  ? [const Color(0xFFE5F3FF), const Color(0xFFCCE4FF)]
-                  : [const Color(0xFFF5F5F5), const Color(0xFFDCDCDC)],
-            ),
-            border: Border.all(
-              color: _hovered
-                  ? const Color(0xFF3C9BE0)
-                  : const Color(0xFFADADAD),
-            ),
-            borderRadius: BorderRadius.circular(3),
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(
-                Icons.arrow_forward,
-                size: 12,
-                color: _hovered ? _kIEBlue : const Color(0xFF444444),
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: _hovered
+                    ? [skin.hoverBackground, skin.hoverBackground]
+                    : [skin.buttonTop, skin.buttonBottom],
               ),
+              border: Border.all(
+                color: _hovered ? skin.accent : skin.buttonBorder,
+              ),
+              borderRadius: BorderRadius.circular(3),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  Icons.arrow_forward,
+                  size: 12,
+                  color: _hovered ? skin.accent : skin.textTertiary,
+                ),
               const SizedBox(width: 2),
               Text(
                 'Go',
                 style: TextStyle(
                   fontSize: 11,
-                  color: _hovered ? _kIEBlue : const Color(0xFF1A1A1A),
+                  color: _hovered ? skin.accent : skin.textPrimary,
                 ),
               ),
             ],

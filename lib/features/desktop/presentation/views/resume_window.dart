@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:portfolio/core/skin.dart';
+import 'package:portfolio/features/desktop/presentation/widgets/metric_strip.dart';
 import 'package:pdfx/pdfx.dart';
-
-// Windows 7 Aero palette
-const _kWin7DarkHeader = Color(0xFF0A246A);
-const _kWin7CardBorder = Color(0xFFADCDEF);
-const _kWin7SectionBg = Color(0xFFEFF4FB);
 
 const _kResumeAssetPath = 'assets/files/elvis_ngatia.pdf';
 
@@ -34,31 +31,19 @@ class _ResumeWindowState extends State<ResumeWindow> {
 
   @override
   Widget build(BuildContext context) {
+    final skin = SkinPalette.of(context);
     return Container(
-      color: const Color(0xFFFFFFFF),
+      color: skin.pageBackground,
       child: Column(
         children: [
-          // Win7-style section header
-          Container(
-            width: double.infinity,
-            color: _kWin7DarkHeader,
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-            child: const Text(
-              'Resume',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
+          const WindowSectionHeader(title: 'Resume'),
 
-          Container(height: 1, color: _kWin7CardBorder),
+          Container(height: 1, color: skin.divider),
 
           // PDF viewer
           Expanded(
             child: Container(
-              color: _kWin7SectionBg,
+              color: skin.cardHeaderBackground,
               child: PdfViewPinch(
                 controller: _pdfController,
                 builders: PdfViewPinchBuilders<DefaultBuilderOptions>(
