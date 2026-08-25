@@ -121,7 +121,11 @@ class _BrowserWindowState extends State<BrowserWindow> {
       );
     }
     _controller.loadHtmlString(_kHomePage);
-    _controller.setJavaScriptMode(JavaScriptMode.unrestricted);
+    if (!kIsWeb) {
+      // JavaScript is always enabled in the web implementation's iframe;
+      // the setter itself throws UnimplementedError there.
+      _controller.setJavaScriptMode(JavaScriptMode.unrestricted);
+    }
   }
 
   void _loadHome() {
