@@ -21,4 +21,6 @@ enum AppType {
   resume,
   settings,
   browser,
+  caseStudies,
+  openSource,
 }

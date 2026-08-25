@@ -54,13 +54,30 @@ class _HeroTagline extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         Text(
-          'Elvis Ngatia',
+          'MOBILE ENGINEER · FLUTTER · PRODUCTION SYSTEMS',
           textAlign: TextAlign.end,
           style: TextStyle(
-            fontSize: 28,
+            fontSize: 11,
+            fontWeight: FontWeight.w600,
+            letterSpacing: 1.2,
+            color: Colors.white.withValues(alpha: 0.85),
+            shadows: [
+              Shadow(
+                blurRadius: 6,
+                color: Colors.black.withValues(alpha: 0.6),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 6),
+        Text(
+          'Building reliable mobile software\nfor real-world operations.',
+          textAlign: TextAlign.end,
+          style: TextStyle(
+            fontSize: 26,
             fontWeight: FontWeight.w700,
+            height: 1.15,
             color: Colors.white,
-            letterSpacing: 0.5,
             shadows: [
               Shadow(
                 blurRadius: 8,
@@ -69,12 +86,12 @@ class _HeroTagline extends StatelessWidget {
             ],
           ),
         ),
-        const SizedBox(height: 4),
+        const SizedBox(height: 6),
         Text(
-          'Flutter Mobile Engineer · Building polished apps for Android & iOS',
+          'Offline-first systems · Performance · Automation · Production reliability',
           textAlign: TextAlign.end,
           style: TextStyle(
-            fontSize: 14,
+            fontSize: 13,
             color: Colors.white.withValues(alpha: 0.9),
             shadows: [
               Shadow(

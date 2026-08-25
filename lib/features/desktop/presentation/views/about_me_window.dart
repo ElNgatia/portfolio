@@ -1,5 +1,7 @@
 // ...existing code...
 import 'package:flutter/material.dart';
+import 'package:portfolio/features/desktop/data/metrics_data.dart';
+import 'package:portfolio/features/desktop/presentation/widgets/metric_strip.dart';
 
 // Windows 7 Aero palette
 const _kWin7DarkHeader = Color(0xFF0A246A);
@@ -97,6 +99,27 @@ class AboutMeWindow extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  // Impact metrics strip
+                  const Text(
+                    'Impact',
+                    style: TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w700,
+                      color: _kWin7DarkHeader,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  const MetricStrip(metrics: impactMetrics),
+                  const SizedBox(height: 16),
+                  const Text(
+                    'About Me',
+                    style: TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w700,
+                      color: _kWin7DarkHeader,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
                   _paragraph(
                     "Hey there! I'm Elvis Ngatia, a Flutter Mobile Engineer who enjoys turning ideas into smooth, beautiful, and reliable mobile experiences. I write code the same way I like my playlists—clean, well-organized, and with great flow. I specialize in building Android and iOS apps using Flutter, with a soft spot for Clean Architecture, Riverpod, and anything that makes codebases easier to understand and scale.",
                   ),
@@ -130,6 +153,66 @@ class AboutMeWindow extends StatelessWidget {
                         height: 1.5,
                       ),
                     ),
+                  ),
+                  const SizedBox(height: 16),
+                  const Text(
+                    'Technical capabilities',
+                    style: TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w700,
+                      color: _kWin7DarkHeader,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  const Win7CapabilitiesCard(
+                    category: 'Mobile',
+                    items: ['Flutter', 'Dart', 'Android', 'iOS'],
+                  ),
+                  const SizedBox(height: 6),
+                  const Win7CapabilitiesCard(
+                    category: 'Architecture',
+                    items: [
+                      'Riverpod',
+                      'Clean Architecture',
+                      'Offline-first',
+                      'Repository patterns',
+                      'Synchronization',
+                    ],
+                  ),
+                  const SizedBox(height: 6),
+                  const Win7CapabilitiesCard(
+                    category: 'Backend / Data',
+                    items: [
+                      'REST APIs',
+                      'Dio',
+                      'Isar',
+                      'Drift',
+                      'Hive CE',
+                      'Supabase',
+                      'Firebase',
+                    ],
+                  ),
+                  const SizedBox(height: 6),
+                  const Win7CapabilitiesCard(
+                    category: 'Delivery',
+                    items: [
+                      'GitHub Actions',
+                      'Docker',
+                      'Self-hosted runners',
+                      'Play Store publishing',
+                      'Shorebird / OTA',
+                    ],
+                  ),
+                  const SizedBox(height: 6),
+                  const Win7CapabilitiesCard(
+                    category: 'Production engineering',
+                    items: [
+                      'Crash debugging',
+                      'Performance analysis',
+                      'Resource management',
+                      'Error handling',
+                      'Observability',
+                    ],
                   ),
                 ],
               ),

@@ -1,63 +1,61 @@
+import 'package:portfolio/features/desktop/domain/entity/metric.dart';
 import 'package:portfolio/features/desktop/domain/entity/project.dart';
 
+/// Products I've shipped — presented as products with users and outcomes,
+/// not a screenshot gallery. Metrics must be verified against Play Console
+/// or store listings before removing "[VERIFY]" placeholders.
 const List<Project> publishedProjects = [
+  Project(
+    name: 'TUCHEZE',
+    description:
+        'A local-first multiplayer party game built around locally relevant charades content. First launch works fully offline from seeded content, with Supabase-backed remote content sync, AdMob monetization and one-time Remove-Ads in-app purchase.',
+    githubUrl: 'https://github.com/ElNgatia/tucheze',
+    role: 'Solo developer',
+    tags: [
+      'Flutter',
+      'Riverpod',
+      'Drift',
+      'Supabase',
+      'AdMob',
+      'In-app purchases',
+      'Android',
+    ],
+  ),
   Project(
     name: 'Mpesa Fees',
     description:
-        'A Flutter app that calculates M-Pesa transaction fees so you never have to do the mental math. Available on the Google Play Store.',
+        'Calculates M-Pesa transaction fees so users never have to do the mental math on the most-used payment rail in Kenya. Published on the Google Play Store.',
     playStoreUrl:
         'https://play.google.com/store/apps/details?id=com.wrenix.mpesafees',
     githubUrl: 'https://github.com/ElNgatia/Mpesa-Fees',
+    role: 'Solo developer',
     tags: ['Flutter', 'Dart', 'Android'],
+    metrics: [
+      Metric(label: 'Installs', value: '[VERIFY]'),
+      Metric(label: 'Rating', value: '[VERIFY]'),
+    ],
   ),
   Project(
     name: 'Adventure Quest',
     description:
-        'An Android app that suggests random activities to beat boredom by consuming the Bored API. Includes local data persistence using Drift.',
+        'Suggests random activities to beat boredom via the Bored API, with local persistence so saved activities survive restarts.',
     playStoreUrl:
         'https://play.google.com/store/apps/details?id=com.adventurequest.app',
     githubUrl: 'https://github.com/ElNgatia/adventure-quest',
-    tags: ['Flutter', 'Dart', 'Android'],
-  ),
-  Project(
-    name: 'timeago_plus',
-    description:
-        'A Dart library that converts a DateTime into a human-friendly string (e.g. "15 minutes ago", "an hour ago"). A maintained fork of the original timeago package, kept dependency-free with full locale support.',
-    pubDevUrl: 'https://pub.dev/packages/timeago_plus',
-    tags: ['Dart', 'Package'],
-  ),
-  Project(
-    name: 'Select With Search',
-    description:
-        'A Flutter package providing a customizable dropdown select widget with built-in search functionality. Supports single and multiple selection modes with efficient filtering.',
-    githubUrl: 'https://github.com/ElNgatia/select_with_search',
-    tags: ['Flutter', 'Dart', 'Package'],
+    role: 'Solo developer',
+    tags: ['Flutter', 'Dart', 'Drift', 'Android'],
   ),
   Project(
     name: 'SAT Localization Checker',
     description:
-        'A CLI tool for Flutter projects that identifies non-localized strings in your codebase, generates ARB localization files, and detects duplicate translation keys. Built with Dart and Go.',
+        'A CLI tool that identifies non-localized strings in Flutter codebases, generates ARB localization files, and detects duplicate translation keys — automating localization QA that was previously manual.',
     githubUrl: 'https://github.com/ElNgatia/sat-localization-checker',
     tags: ['Dart', 'Go', 'CLI', 'Developer Tool'],
   ),
   Project(
-    name: 'Olivia Portfolio',
-    description:
-        'A professional portfolio website built for Olivia Mukora, a Social Media Manager and Content Strategist based in Nairobi. Features automated deployment via GitHub Actions.',
-    githubUrl: 'https://github.com/ElNgatia/olivia-portfolio',
-    tags: ['React', 'JavaScript', 'Tailwind CSS', 'Web'],
-  ),
-  Project(
-    name: 'Brown and Bliss',
-    description:
-        'A bespoke web experience crafted for Brown and Bliss, with Supabase powering the backend and database.',
-    websiteUrl: 'https://www.brownandblisss.co.ke/',
-    tags: ['Web', 'Supabase'],
-  ),
-  Project(
     name: 'Learning Tracker',
     description:
-        'A Chrome browser extension published under developer name "El Ngatia". Currently under review on the Chrome Web Store.',
+        'A Chrome extension for tracking learning progress, published under "El Ngatia".',
     tags: ['Chrome Extension', 'JavaScript'],
     isPending: true,
   ),
