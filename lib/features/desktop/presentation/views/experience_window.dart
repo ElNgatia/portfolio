@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:portfolio/features/desktop/data/experience_data.dart';
 import 'package:portfolio/features/desktop/domain/entity/experience.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 // Windows 7 Aero palette
 const _kWin7DarkHeader = Color(0xFF0A246A);
@@ -264,6 +265,27 @@ class _Win7ExperienceCard extends StatelessWidget {
                           ),
                         ],
 
+                        // Public repositories
+                        if (experience.repositories.isNotEmpty) ...[
+                          const SizedBox(height: 10),
+                          const Text(
+                            'Public repositories',
+                            style: TextStyle(
+                              fontSize: 11,
+                              fontWeight: FontWeight.w700,
+                              letterSpacing: 0.4,
+                              color: Color(0xFF0A246A),
+                            ),
+                          ),
+                          const SizedBox(height: 6),
+                          ...experience.repositories.map(
+                            (repo) => Padding(
+                              padding: const EdgeInsets.only(bottom: 5),
+                              child: _WorkRepoRow(repo: repo),
+                            ),
+                          ),
+                        ],
+
                         // Skills
                         if (experience.skills.isNotEmpty) ...[
                           const SizedBox(height: 8),
@@ -324,6 +346,93 @@ class _MetaItem extends StatelessWidget {
           style: const TextStyle(fontSize: 11, color: Color(0xFF666666)),
         ),
       ],
+    );
+  }
+}
+
+class _WorkRepoRow extends StatelessWidget {
+  const _WorkRepoRow({required this.repo});
+
+  final WorkRepository repo;
+
+  Future<void> _open() async {
+    final uri = Uri.parse(repo.url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: GestureDetector(
+        onTap: _open,
+        child: Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: _kWin7SectionBg,
+            border: Border.all(color: _kWin7CardBorder),
+            borderRadius: BorderRadius.circular(3),
+          ),
+          child: Row(
+            children: [
+              const Icon(Icons.code, size: 13, color: _kWin7Blue),
+              const SizedBox(width: 6),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '${repo.name} ↗',
+                      style: const TextStyle(
+                        fontSize: 11.5,
+                        fontWeight: FontWeight.w600,
+                        color: _kWin7Blue,
+                      ),
+                    ),
+                    if (repo.description != null)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 1),
+                        child: Text(
+                          repo.description!,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            fontSize: 10.5,
+                            height: 1.3,
+                            color: Color(0xFF555555),
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+              if (repo.commits != null) ...[
+                const SizedBox(width: 8),
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border.all(color: _kWin7CardBorder),
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                  child: Text(
+                    '${repo.commits} commits',
+                    style: const TextStyle(
+                      fontSize: 10,
+                      fontWeight: FontWeight.w600,
+                      color: Color(0xFF2567A5),
+                    ),
+                  ),
+                ),
+              ],
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

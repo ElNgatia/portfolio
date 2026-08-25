@@ -12,7 +12,19 @@ final desktopIconsProvider = Provider<List<DesktopIcon>>(
         id: '123',
       ),
       DesktopIcon(
-        title: 'Projects',
+        title: 'Case Studies',
+        icon: Icon(Icons.article),
+        appType: AppType.caseStudies,
+        id: '234',
+      ),
+      DesktopIcon(
+        title: 'Open Source',
+        icon: Icon(Icons.code),
+        appType: AppType.openSource,
+        id: '567',
+      ),
+      DesktopIcon(
+        title: 'Products',
         icon: Icon(Icons.construction),
         appType: AppType.projects,
         id: '456',

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:portfolio/features/desktop/data/projects_data.dart';
 import 'package:portfolio/features/desktop/domain/entity/project.dart';
+import 'package:portfolio/features/desktop/presentation/widgets/metric_strip.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 // Windows 7 Aero palette
-const _kWin7DarkHeader = Color(0xFF0A246A);
 const _kWin7Blue = Color(0xFF0078D7);
 const _kWin7CardBorder = Color(0xFFADCDEF);
 const _kWin7SectionBg = Color(0xFFEFF4FB);
@@ -20,20 +20,7 @@ class ProjectsWindow extends StatelessWidget {
       color: const Color(0xFFFFFFFF),
       child: Column(
         children: [
-          // Win7-style section header
-          Container(
-            width: double.infinity,
-            color: _kWin7DarkHeader,
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-            child: const Text(
-              'Published Projects',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
+          const Win7SectionHeader(title: "Products I've shipped"),
           Container(height: 1, color: _kWin7CardBorder),
           Expanded(
             child: ListView.builder(
@@ -135,6 +122,17 @@ class _Win7ProjectCard extends StatelessWidget {
                     color: Color(0xFF1A1A1A),
                   ),
                 ),
+                if (project.role != null) ...[
+                  const SizedBox(height: 6),
+                  Text(
+                    'Role: ${project.role}',
+                    style: const TextStyle(
+                      fontSize: 11,
+                      fontWeight: FontWeight.w600,
+                      color: Color(0xFF555555),
+                    ),
+                  ),
+                ],
                 if (project.tags.isNotEmpty) ...[
                   const SizedBox(height: 8),
                   Wrap(

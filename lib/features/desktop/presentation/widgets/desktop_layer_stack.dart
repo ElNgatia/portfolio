@@ -4,8 +4,10 @@ import 'package:portfolio/features/desktop/domain/entity/window_entity.dart';
 import 'package:portfolio/features/desktop/presentation/provider/window_manager.dart';
 import 'package:portfolio/features/desktop/presentation/views/about_me_window.dart';
 import 'package:portfolio/features/desktop/presentation/views/browser_window.dart';
+import 'package:portfolio/features/desktop/presentation/views/case_studies_window.dart';
 import 'package:portfolio/features/desktop/presentation/views/contact_window.dart';
 import 'package:portfolio/features/desktop/presentation/views/experience_window.dart';
+import 'package:portfolio/features/desktop/presentation/views/open_source_window.dart';
 import 'package:portfolio/features/desktop/presentation/views/projects_window.dart';
 import 'package:portfolio/features/desktop/presentation/views/resume_window.dart';
 import 'package:portfolio/features/desktop/presentation/widgets/window_frame.dart';
@@ -17,7 +19,7 @@ class DesktopLayerStack extends ConsumerWidget {
   Widget _buildWindowContentById(WindowEntity window) {
     // Map window.id values to the corresponding content widgets.
     // '123' is the About Me desktop icon id from desktop_icons_provider.
-    switch (window.id) {
+      switch (window.id) {
       case '012':
         return const ContactWindow();
       case '123':
@@ -32,6 +34,10 @@ class DesktopLayerStack extends ConsumerWidget {
         return const ResumeWindow();
       case '901':
         return const BrowserWindow();
+      case '234':
+        return const CaseStudiesWindow();
+      case '567':
+        return const OpenSourceWindow();
       default:
         return Center(child: Text(window.title));
     }
