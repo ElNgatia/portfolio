@@ -1,4 +1,6 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 // IE / Windows 7 palette
@@ -57,10 +59,11 @@ const _kHomePage = '''<!DOCTYPE html>
   <div class="content">
     <div class="section-title">Quick Links</div>
     <div class="links-grid">
-      <a class="link-card" href="https://pub.dev/publishers/ngatia.dev/packages" target="_top">📦 pub.dev packages</a>
-      <a class="link-card" href="https://github.com/ElNgatia" target="_top">💻 GitHub</a>
-      <a class="link-card" href="https://flutter.dev" target="_top">🐦 Flutter</a>
-      <a class="link-card" href="https://dart.dev" target="_top">🎯 Dart</a>
+      <a class="link-card" href="https://pub.dev/publishers/ngatia.dev/packages" target="_blank">📦 pub.dev packages</a>
+      <a class="link-card" href="https://github.com/ElNgatia" target="_blank">💻 GitHub</a>
+      <a class="link-card" href="https://github.com/Solutech-Limited" target="_blank">🏢 Solutech Engineering</a>
+      <a class="link-card" href="https://flutter.dev" target="_blank">🐦 Flutter</a>
+      <a class="link-card" href="https://dart.dev" target="_blank">🎯 Dart</a>
     </div>
     <div class="section-title">About This Browser</div>
     <div class="tip">
@@ -86,17 +89,55 @@ class _BrowserWindowState extends State<BrowserWindow> {
     text: 'about:home',
   );
 
+  /// True while a programmatic (address-bar/home) load is in flight so the
+  /// navigation delegate doesn't treat it as a user-clicked link.
+  bool _programmaticLoad = false;
+
   @override
   void initState() {
     super.initState();
-    _controller = WebViewController()..loadHtmlString(_kHomePage);
+    _controller = WebViewController();
+    // NavigationDelegate is unsupported by webview_flutter_web; on the web
+    // the home page's target="_blank" links open real browser tabs instead.
+    if (!kIsWeb) {
+      _controller.setNavigationDelegate(
+        NavigationDelegate(
+          onNavigationRequest: (request) {
+            if (_programmaticLoad) {
+              _programmaticLoad = false;
+              return NavigationDecision.navigate;
+            }
+            final url = request.url;
+            if (url.startsWith('http://') || url.startsWith('https://')) {
+              launchUrl(
+                Uri.parse(url),
+                mode: LaunchMode.externalApplication,
+              );
+              return NavigationDecision.prevent;
+            }
+            return NavigationDecision.navigate;
+          },
+        ),
+      );
+    }
+    _controller.loadHtmlString(_kHomePage);
+    if (!kIsWeb) {
+      // JavaScript is always enabled in the web implementation's iframe;
+      // the setter itself throws UnimplementedError there.
+      _controller.setJavaScriptMode(JavaScriptMode.unrestricted);
+    }
+  }
+
+  void _loadHome() {
+    _programmaticLoad = true;
+    _controller.loadHtmlString(_kHomePage);
+    if (mounted) setState(() => _addressController.text = 'about:home');
   }
 
   void _navigate(String input) {
     String url = input.trim();
     if (url.isEmpty || url == 'about:home') {
-      _controller.loadHtmlString(_kHomePage);
-      if (mounted) setState(() => _addressController.text = 'about:home');
+      _loadHome();
       return;
     }
     if (!url.startsWith('http://') && !url.startsWith('https://')) {
@@ -106,6 +147,7 @@ class _BrowserWindowState extends State<BrowserWindow> {
         url = 'https://www.google.com/search?q=${Uri.encodeComponent(url)}';
       }
     }
+    _programmaticLoad = true;
     _controller.loadRequest(Uri.parse(url));
     if (mounted) setState(() => _addressController.text = url);
   }
@@ -158,10 +200,7 @@ class _BrowserWindowState extends State<BrowserWindow> {
           _NavButton(
             icon: Icons.home,
             tooltip: 'Home',
-            onPressed: () {
-              _controller.loadHtmlString(_kHomePage);
-              setState(() => _addressController.text = 'about:home');
-            },
+            onPressed: _loadHome,
           ),
           const SizedBox(width: 6),
           Expanded(child: _buildAddressBar()),

@@ -7,6 +7,10 @@ class Project {
   final String? githubUrl;
   final String? playStoreUrl;
   final List<String> tags;
+
+  /// My role in the project, e.g. "Solo developer" or "Mobile Engineer".
+  final String? role;
+
   final bool isPending;
 
   const Project({
@@ -18,6 +22,7 @@ class Project {
     this.githubUrl,
     this.playStoreUrl,
     this.tags = const [],
+    this.role,
     this.isPending = false,
   });
 }

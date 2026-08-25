@@ -2,6 +2,7 @@ import 'dart:math' as math;
 import 'dart:ui';
 
 import 'package:portfolio/core/constants.dart';
+import 'package:portfolio/features/desktop/domain/entity/desktop_icon.dart';
 import 'package:portfolio/features/desktop/domain/entity/window_entity.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -14,6 +15,38 @@ const _minWindowHeight = 200.0;
 class WindowManager extends _$WindowManager {
   @override
   Map<String, WindowEntity> build() => {};
+
+  /// Opens the window for [icon], sized and positioned for [viewport].
+  /// Shared by desktop-icon taps and deep-link navigation.
+  void openApp(DesktopIcon icon, Size viewport) {
+    final isMobile = viewport.width < kMobileBreakpoint;
+
+    // Clamp window size so it never exceeds the available viewport area.
+    final windowWidth = math.min(600.0, viewport.width);
+    final windowHeight = math.min(400.0, viewport.height - kTaskbarHeight);
+    final windowSize = Size(windowWidth, windowHeight);
+
+    final center =
+        viewport.center(Offset.zero) -
+        Offset(windowSize.width / 2, windowSize.height / 2);
+
+    openWindow(
+      WindowEntity(
+        id: icon.id,
+        icon: icon.icon,
+        title: icon.title,
+        // On mobile open maximised; keep restore state so the user can
+        // un-maximise to a sensibly-sized floating window.
+        position: isMobile ? Offset.zero : center,
+        size: isMobile
+            ? Size(viewport.width, viewport.height - kTaskbarHeight)
+            : windowSize,
+        isMaximized: isMobile,
+        preMaximizePosition: isMobile ? center : null,
+        preMaximizeSize: isMobile ? windowSize : null,
+      ),
+    );
+  }
 
   void openWindow(WindowEntity window) {
     state = {
