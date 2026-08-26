@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:portfolio/features/desktop/domain/entity/desktop_icon.dart';
 import 'package:portfolio/features/desktop/presentation/provider/desktop_icons_provider.dart';
 import 'package:portfolio/features/desktop/presentation/provider/window_manager.dart';
+import 'package:portfolio/features/taskbar/presentation/provider/power_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 /// Windows 7-style start menu: searchable program list on the left,
@@ -32,12 +33,18 @@ class _StartMenuState extends ConsumerState<StartMenu> {
     if (mounted) Navigator.of(context).pop();
   }
 
+  void _sleep() {
+    Navigator.of(context).pop();
+    ref.read(powerProvider.notifier).sleep();
+  }
+
   void _shutDown() {
     Navigator.of(context).pop();
     final wm = ref.read(windowManagerProvider.notifier);
     for (final id in ref.read(windowManagerProvider).keys.toList()) {
       wm.closeWindow(id);
     }
+    ref.read(powerProvider.notifier).shutDown();
   }
 
   bool _isSystemApp(DesktopIcon icon) =>
@@ -85,6 +92,7 @@ class _StartMenuState extends ConsumerState<StartMenu> {
             role: 'Mobile Engineer',
             onGitHub: () => _openExternal('https://github.com/ElNgatia'),
             onEmail: () => _openExternal('mailto:ngatiaelvisw@gmail.com'),
+            onSleep: _sleep,
             onShutDown: _shutDown,
           ),
         ],
@@ -220,6 +228,7 @@ class _UserRail extends StatelessWidget {
     required this.role,
     required this.onGitHub,
     required this.onEmail,
+    required this.onSleep,
     required this.onShutDown,
   });
 
@@ -227,6 +236,7 @@ class _UserRail extends StatelessWidget {
   final String role;
   final VoidCallback onGitHub;
   final VoidCallback onEmail;
+  final VoidCallback onSleep;
   final VoidCallback onShutDown;
 
   static const _railGradient = LinearGradient(
@@ -308,6 +318,12 @@ class _UserRail extends StatelessWidget {
             onTap: onEmail,
           ),
           const Spacer(),
+          _RailLink(
+            key: const ValueKey('start_menu_sleep'),
+            icon: Icons.dark_mode_outlined,
+            label: 'Sleep',
+            onTap: onSleep,
+          ),
           _RailLink(
             key: const ValueKey('start_menu_shutdown'),
             icon: Icons.power_settings_new,

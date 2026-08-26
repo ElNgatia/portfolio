@@ -8,6 +8,7 @@ import 'package:portfolio/features/desktop/domain/entity/window_entity.dart';
 import 'package:portfolio/features/desktop/presentation/provider/window_manager.dart';
 import 'package:portfolio/features/phone/phone.dart';
 import 'package:portfolio/features/settings/settings.dart';
+import 'package:portfolio/features/taskbar/presentation/widgets/power_overlay.dart';
 
 class DesktopView extends ConsumerStatefulWidget {
   const DesktopView({super.key});
@@ -71,46 +72,58 @@ class _DesktopViewState extends ConsumerState<DesktopView> {
 
     // Narrow viewports get the Windows Phone (Metro) shell instead of the
     // desktop metaphor: a tile-based Start screen and full-screen apps.
+    final Widget shell;
     if (isMobile) {
       final activeWindow = ref.watch(windowManagerProvider).values
           .where((w) => w.isOpen && !w.isMinimized)
           .toList()
           .lastOrNull;
 
-      return activeWindow == null
+      shell = activeWindow == null
           ? const MetroStartView()
           : MetroAppPage(window: activeWindow);
-    }
+    } else {
+      shell = Stack(
+        children: [
+          Positioned.fill(
+            child: _WallpaperBackground(wallpaper: wallpaper),
+          ),
 
-    return Stack(
-      children: [
-        Positioned.fill(child: _WallpaperBackground(wallpaper: wallpaper)),
-
-        Padding(
-          padding: const EdgeInsets.all(16),
-          child: Align(
-            alignment: Alignment.topLeft,
-            child: Wrap(
-              direction: Axis.vertical,
-              spacing: 24,
-              runSpacing: 16,
-              children: icons
-                  .map((icon) => DesktopIconWidget(icon: icon))
-                  .toList(),
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Align(
+              alignment: Alignment.topLeft,
+              child: Wrap(
+                direction: Axis.vertical,
+                spacing: 24,
+                runSpacing: 16,
+                children: icons
+                    .map((icon) => DesktopIconWidget(icon: icon))
+                    .toList(),
+              ),
             ),
           ),
-        ),
 
-        Positioned(
-          right: 24,
-          bottom: isMobile ? kTaskbarHeight + 16 : kTaskbarHeight + 24,
-          left: isMobile ? 24 : null,
-          child: IgnorePointer(
-            child: _HeroTagline(compact: isMobile),
+          Positioned(
+            right: 24,
+            bottom: isMobile ? kTaskbarHeight + 16 : kTaskbarHeight + 24,
+            left: isMobile ? 24 : null,
+            child: IgnorePointer(
+              child: _HeroTagline(compact: isMobile),
+            ),
           ),
-        ),
 
-        const DesktopLayerStack(),
+          const DesktopLayerStack(),
+        ],
+      );
+    }
+
+    // Power overlays sit above every shell so sleep/shut-down covers
+    // everything, taskbar included.
+    return Stack(
+      children: [
+        Positioned.fill(child: shell),
+        const Positioned.fill(child: PowerOverlay()),
       ],
     );
   }

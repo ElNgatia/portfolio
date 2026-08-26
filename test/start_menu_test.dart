@@ -83,4 +83,45 @@ void main() {
     expect(find.byKey(const ValueKey('start_menu_search')), findsNothing);
     expect(find.byKey(const ValueKey('titlebar_123')), findsNothing);
   });
+
+  testWidgets('sleep dims the screen and any click wakes it',
+      (tester) async {
+    await _pumpDesktopApp(tester);
+
+    await tester.tap(find.byKey(const ValueKey('start_menu_sleep')));
+    await tester.pump();
+
+    expect(find.byKey(const ValueKey('power_sleep_overlay')), findsOneWidget);
+
+    // A click anywhere on the black screen wakes the machine.
+    await tester.tap(find.byKey(const ValueKey('power_sleep_overlay')));
+    await tester.pumpAndSettle();
+
+    expect(find.byKey(const ValueKey('power_sleep_overlay')), findsNothing);
+  });
+
+  testWidgets('shut down plays the sequence and power on boots back up',
+      (tester) async {
+    await _pumpDesktopApp(tester);
+
+    await tester.tap(find.byKey(const ValueKey('start_menu_shutdown')));
+    // No pumpAndSettle: the spinner animates indefinitely.
+    await tester.pump();
+    expect(
+      find.byKey(const ValueKey('power_shutting_down_overlay')),
+      findsOneWidget,
+    );
+
+    // Advance past the shutdown delay into the powered-off state.
+    await tester.pump(const Duration(seconds: 2));
+    expect(find.byKey(const ValueKey('power_off_overlay')), findsOneWidget);
+    expect(find.text("It's now safe to close this tab."), findsOneWidget);
+
+    await tester.tap(find.byKey(const ValueKey('power_on_button')));
+    await tester.pumpAndSettle();
+
+    // Back on a clean desktop.
+    expect(find.byKey(const ValueKey('power_off_overlay')), findsNothing);
+    expect(find.byIcon(Icons.menu), findsOneWidget);
+  });
 }
