@@ -15,6 +15,12 @@ class MetroStartView extends ConsumerWidget {
   static const _sidePadding = 12.0;
   static const _gutter = 12.0;
 
+  /// Rich content for specific wide tiles, keyed by app id.
+  static const Map<String, WidgetBuilder> _wideTileContent = {
+    '123': _buildAboutTileContent,
+    '789': _buildExperienceTileContent,
+  };
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final icons = ref.watch(desktopIconsProvider);
@@ -24,13 +30,11 @@ class MetroStartView extends ConsumerWidget {
       builder: (context, constraints) {
         final width = constraints.maxWidth;
         final medium = (width - _sidePadding * 2 - _gutter) / 2;
-        final wide = medium * 2 + _gutter;
         // Vertical room for the label under medium tiles.
         const labelExtent = 26.0;
 
-        DesktopIcon? iconFor(String id) => icons
-            .where((icon) => icon.id == id)
-            .firstOrNull;
+        DesktopIcon? iconFor(String id) =>
+            icons.where((icon) => icon.id == id).firstOrNull;
 
         void open(DesktopIcon? icon) {
           if (icon == null) return;
@@ -51,38 +55,68 @@ class MetroStartView extends ConsumerWidget {
           );
         }
 
-        Widget mediumRow(MetroTileSpec left, MetroTileSpec right) {
-          return Padding(
-            padding: const EdgeInsets.only(bottom: _gutter),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  width: medium,
-                  height: medium + labelExtent,
-                  child: tile(left),
-                ),
-                SizedBox(width: _gutter),
-                Expanded(
-                  child: SizedBox(
-                    height: medium + labelExtent,
-                    child: tile(right),
+        // Walk the specs in order: wide tiles take a full row, mediums
+        // pair up two per row so the grid adapts as apps are added.
+        List<Widget> buildRows() {
+          final rows = <Widget>[];
+          var pendingMediums = <MetroTileSpec>[];
+
+          void flushMediums() {
+            for (var i = 0; i < pendingMediums.length; i += 2) {
+              final left = pendingMediums[i];
+              final right =
+                  i + 1 < pendingMediums.length ? pendingMediums[i + 1] : null;
+              rows.add(
+                Padding(
+                  padding: const EdgeInsets.only(bottom: _gutter),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        width: medium,
+                        height: medium + labelExtent,
+                        child: tile(left),
+                      ),
+                      SizedBox(width: _gutter),
+                      Expanded(
+                        child: right == null
+                            ? const SizedBox()
+                            : SizedBox(
+                                height: medium + labelExtent,
+                                child: tile(right),
+                              ),
+                      ),
+                    ],
                   ),
                 ),
-              ],
-            ),
-          );
-        }
+              );
+            }
+            pendingMediums = [];
+          }
 
-        Widget wideRow(MetroTileSpec spec, Widget? content) {
-          return Padding(
-            padding: const EdgeInsets.only(bottom: _gutter),
-            child: SizedBox(
-              width: wide,
-              height: medium,
-              child: tile(spec, content: content),
-            ),
-          );
+          for (final spec in kMetroTileSpecs) {
+            if (spec.size == MetroTileSize.wide) {
+              flushMediums();
+              final builder = _wideTileContent[spec.id];
+              rows.add(
+                Padding(
+                  padding: const EdgeInsets.only(bottom: _gutter),
+                  child: SizedBox(
+                    width: medium * 2 + _gutter,
+                    height: medium,
+                    child: tile(
+                      spec,
+                      content: builder?.call(context),
+                    ),
+                  ),
+                ),
+              );
+            } else {
+              pendingMediums.add(spec);
+            }
+          }
+          flushMediums();
+          return rows;
         }
 
         return Container(
@@ -99,26 +133,7 @@ class MetroStartView extends ConsumerWidget {
                     padding: const EdgeInsets.fromLTRB(
                       _sidePadding, 8, _sidePadding, 24,
                     ),
-                    children: [
-                      wideRow(kMetroTileSpecs[0], _aboutTileContent()),
-                      mediumRow(kMetroTileSpecs[1], kMetroTileSpecs[2]),
-                      wideRow(kMetroTileSpecs[3], _experienceTileContent()),
-                      mediumRow(kMetroTileSpecs[4], kMetroTileSpecs[5]),
-                      mediumRow(kMetroTileSpecs[6], kMetroTileSpecs[7]),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: _gutter),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(
-                              width: medium,
-                              height: medium + labelExtent,
-                              child: tile(kMetroTileSpecs[8]),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
+                    children: buildRows(),
                   ),
                 ),
               ],
@@ -129,7 +144,7 @@ class MetroStartView extends ConsumerWidget {
     );
   }
 
-  Widget _aboutTileContent() {
+  static Widget _buildAboutTileContent(BuildContext context) {
     return MetroWideTileContent(
       title: 'Elvis Ngatia',
       subtitle: 'Mobile Engineer · Flutter · Offline-first systems',
@@ -139,7 +154,8 @@ class MetroStartView extends ConsumerWidget {
         alignment: Alignment.center,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          border: Border.all(color: Colors.white.withValues(alpha: 0.9), width: 2),
+          border:
+              Border.all(color: Colors.white.withValues(alpha: 0.9), width: 2),
         ),
         child: const Text(
           'EN',
@@ -153,7 +169,7 @@ class MetroStartView extends ConsumerWidget {
     );
   }
 
-  Widget _experienceTileContent() {
+  static Widget _buildExperienceTileContent(BuildContext context) {
     return const MetroWideTileContent(
       title: 'Experience',
       subtitle: 'Mobile Engineer · Solutech Limited · Nairobi',

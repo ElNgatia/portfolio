@@ -39,6 +39,7 @@ void main() {
       '345', // Resume
       '678', // Settings
       '901', // Browser
+      '112', // Media Player
     ]) {
       expect(find.byKey(ValueKey('start_menu_$id')), findsOneWidget);
     }

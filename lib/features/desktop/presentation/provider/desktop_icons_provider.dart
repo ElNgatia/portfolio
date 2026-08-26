@@ -59,6 +59,12 @@ final desktopIconsProvider = Provider<List<DesktopIcon>>(
         appType: AppType.browser,
         id: '901',
       ),
+      DesktopIcon(
+        title: 'Media Player',
+        icon: Icon(Icons.music_note),
+        appType: AppType.music,
+        id: '112',
+      ),
     ];
   },
 );

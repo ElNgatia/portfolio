@@ -12,6 +12,7 @@ class MetroColors {
   static const red = Color(0xFFE51400);
   static const blue = Color(0xFF0050EF);
   static const gray = Color(0xFF6B6B6B);
+  static const mauve = Color(0xFF76608A);
 
   static const background = Color(0xFF000000);
   static const appBar = Color(0xFF141414);
@@ -70,6 +71,11 @@ const List<MetroTileSpec> kMetroTileSpecs = [
     size: MetroTileSize.medium,
   ),
   MetroTileSpec(id: '678', accent: MetroColors.gray, size: MetroTileSize.medium),
+  MetroTileSpec(
+    id: '112',
+    accent: MetroColors.mauve,
+    size: MetroTileSize.medium,
+  ),
 ];
 
 /// Accent colour for an app id; used for header underlines etc.
