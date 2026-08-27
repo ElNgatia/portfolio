@@ -38,7 +38,7 @@ void main() {
 
     // Now playing header shows the first track.
     expect(find.text('Neon Skyline'), findsNWidgets(2)); // header + playlist row
-    expect(find.text('SoundHelix'), findsWidgets);
+    expect(find.text('Video Game Music'), findsWidgets);
 
     // All five tracks are listed.
     for (var i = 0; i < 5; i++) {
