@@ -54,7 +54,10 @@ class _MediaPlayerWindowState extends State<MediaPlayerWindow> {
       _error = null;
     });
     try {
-      await _player.play(UrlSource(_track.url));
+      final src = _track.url.startsWith('assets/')
+          ? AssetSource(_track.url)
+          : UrlSource(_track.url);
+      await _player.play(src);
     } catch (e) {
       print("Error playing track: $e ${_track.title}");
       if (mounted) {
