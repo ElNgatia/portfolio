@@ -55,7 +55,8 @@ class _MediaPlayerWindowState extends State<MediaPlayerWindow> {
     });
     try {
       await _player.play(UrlSource(_track.url));
-    } catch (_) {
+    } catch (e) {
+      print("Error playing track: $e ${_track.title}");
       if (mounted) {
         setState(() => _error = 'Could not load this track.');
       }
