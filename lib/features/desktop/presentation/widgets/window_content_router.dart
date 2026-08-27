@@ -5,6 +5,7 @@ import 'package:portfolio/features/desktop/presentation/views/browser_window.dar
 import 'package:portfolio/features/desktop/presentation/views/case_studies_window.dart';
 import 'package:portfolio/features/desktop/presentation/views/contact_window.dart';
 import 'package:portfolio/features/desktop/presentation/views/experience_window.dart';
+import 'package:portfolio/features/desktop/presentation/views/media_player_window.dart';
 import 'package:portfolio/features/desktop/presentation/views/open_source_window.dart';
 import 'package:portfolio/features/desktop/presentation/views/projects_window.dart';
 import 'package:portfolio/features/desktop/presentation/views/resume_window.dart';
@@ -34,6 +35,8 @@ Widget windowContentFor(WindowEntity window) {
       return const CaseStudiesWindow();
     case '567':
       return const OpenSourceWindow();
+    case '112':
+      return const MediaPlayerWindow();
     default:
       return Center(child: Text(window.title));
   }

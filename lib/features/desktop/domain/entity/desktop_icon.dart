@@ -23,4 +23,5 @@ enum AppType {
   browser,
   caseStudies,
   openSource,
+  music,
 }
