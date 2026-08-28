@@ -28,6 +28,7 @@ dependencies:
   web: ^1.1.0
 
 dev_dependencies:
+  sentry_dart_plugin: ^3.4.0
   riverpod_generator: ^3.0.3
   build_runner: ^2.7.1
   flutter_test:
@@ -40,3 +41,9 @@ flutter:
     - assets/images/
     - assets/files/
     - assets/audio/
+
+sentry:
+  upload_debug_symbols: true
+  upload_source_maps: true
+  project: flutter
+  org: elvis-ngatia

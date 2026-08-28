@@ -43,7 +43,9 @@ class MyApp extends StatelessWidget {
 /// so the app still runs normally.
 Future<void> initFirebaseAnalytics() async {
   try {
-    await Firebase.initializeApp(options: firebaseWebOptions);
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
     Analytics.init(FirebaseAnalytics.instance);
     await Analytics.logAppOpen();
   } catch (e) {
