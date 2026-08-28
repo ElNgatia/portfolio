@@ -7,7 +7,9 @@ const List<Project> publishedProjects = [
   Project(
     name: 'TUCHEZE',
     description:
-        'A local-first multiplayer party game built around locally relevant charades content. First launch works fully offline from seeded content, with Supabase-backed remote content sync, AdMob monetization and one-time Remove-Ads in-app purchase.',
+        'A local-first multiplayer party game built around locally relevant charades content. First launch works fully offline from seeded content, with Supabase-backed remote content sync, AdMob monetization and one-time Remove-Ads in-app purchase. Live on the Google Play Store.',
+    playStoreUrl:
+        'https://play.google.com/store/apps/details?id=com.tucheze.app',
     githubUrl: 'https://github.com/ElNgatia/tucheze',
     role: 'Solo developer',
     tags: [
@@ -50,8 +52,10 @@ const List<Project> publishedProjects = [
   Project(
     name: 'Learning Tracker',
     description:
-        'A Chrome extension for tracking learning progress, published under "El Ngatia".',
+        'A Chrome extension for tracking learning resources to a Google Sheets tracker, published under "El Ngatia".',
+    chromeStoreUrl:
+        'https://chromewebstore.google.com/detail/ialpooiaggfmaipopphdfmbepjocbgmb',
+    role: 'Solo developer',
     tags: ['Chrome Extension', 'JavaScript'],
-    isPending: true,
   ),
 ];
