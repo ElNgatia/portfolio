@@ -13,7 +13,7 @@ Future<void> main() async {
   await SentryFlutter.init(
     (options) {
       // TODO: enable capturing by adding your Sentry DSN:
-      // options.dsn = 'https://<key>@<org>.ingest.sentry.io/<project>';
+      options.dsn = 'https://06a8b48a627d42097f01dd68de7e9287@o4511986939330560.ingest.de.sentry.io/4511986950013008';
       options.tracesSampleRate = 1.0;
     },
     appRunner: () async {
