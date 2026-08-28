@@ -1,7 +1,9 @@
 import 'dart:math' as math;
 import 'dart:ui';
 
+import 'package:portfolio/core/analytics.dart';
 import 'package:portfolio/core/constants.dart';
+import 'package:portfolio/core/window_routes.dart';
 import 'package:portfolio/features/desktop/domain/entity/desktop_icon.dart';
 import 'package:portfolio/features/desktop/domain/entity/window_entity.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -54,6 +56,11 @@ class WindowManager extends _$WindowManager {
       window.id: window.copyWith(isOpen: true, isFocused: true),
     };
     _bringToFront(window.id);
+    // Fire-and-forget analytics for the opened section (only if enabled).
+    final slug = windowIdToSlug(window.id);
+    if (slug != null) {
+      Analytics.logSectionOpen(window.id, slug);
+    }
   }
 
   void closeWindow(String id) {
